@@ -1,0 +1,186 @@
+{% extends "layout.html" %}
+{% block title %}{{ t('system_monitor') }} - {{ t('app_name') }}{% endblock %}
+
+{% block head_extra %}
+<style>
+    .monitor-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1.5rem;
+    }
+    .stat-card {
+        background-color: var(--bg-primary);
+        padding: 1.5rem;
+        border-radius: 8px;
+    }
+    .stat-card h3 {
+        margin-top: 0;
+        border-bottom: 1px solid var(--border-color);
+        padding-bottom: 0.5rem;
+        margin-bottom: 1rem;
+        font-size: 1.1rem;
+    }
+    .gauge-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        height: 150px;
+    }
+    .gauge-circle {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        background: conic-gradient(var(--accent-primary) 0deg, var(--bg-secondary) 0deg);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: background 0.3s;
+    }
+    .gauge-inner-circle {
+        width: 120px;
+        height: 120px;
+        background-color: var(--bg-primary);
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        text-align: center;
+    }
+    .gauge-value {
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--text-primary);
+    }
+    .gauge-label {
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+        margin-top: -5px;
+    }
+    .disk-usage-bar {
+        width: 100%; background-color: var(--bg-secondary); border-radius: 5px; margin-bottom: 0.5rem; direction: ltr;
+    }
+    .disk-usage-fill {
+        height: 20px; background-color: var(--accent-primary); border-radius: 5px; text-align: center; color: white; line-height: 20px; font-size: 0.8rem;
+    }
+    .disk-label {
+        direction: ltr;
+        text-align: center;
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+        margin-top: 0.25rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="monitor-grid" id="monitor-grid">
+    <div class="spinner"></div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const grid = document.getElementById('monitor-grid');
+    let intervalId = null;
+
+    function renderGauge(id, title, value, unit, label) {
+        const card = document.createElement('div');
+        card.className = 'stat-card';
+        card.innerHTML = `
+            <h3>${title}</h3>
+            <div class="gauge-container">
+                <div class="gauge-circle" id="gauge-${id}">
+                    <div class="gauge-inner-circle">
+                        <div class="gauge-value" id="value-${id}">${value}<small>${unit}</small></div>
+                        <div class="gauge-label">${label}</div>
+                    </div>
+                </div>
+            </div>`;
+        return card;
+    }
+    
+    function renderDisk(pathId, title, data) {
+        const card = document.createElement('div');
+        card.className = 'stat-card';
+        card.innerHTML = `
+            <h3>${title}</h3>
+            <div class="disk-usage-bar">
+                <div class="disk-usage-fill" id="disk-fill-${pathId}" style="width: ${data.percent}%">${data.percent}%</div>
+            </div>
+            <div class="disk-label" id="disk-label-${pathId}">${data.used}GB / ${data.total}GB</div>`;
+        return card;
+    }
+    
+    function updateGauge(id, percent, valueText) {
+        const circle = document.getElementById(`gauge-${id}`);
+        const valueEl = document.getElementById(`value-${id}`);
+        if(circle) circle.style.background = `conic-gradient(var(--accent-primary) ${percent * 3.6}deg, var(--bg-secondary) 0deg)`;
+        if(valueEl) valueEl.innerHTML = valueText;
+    }
+    
+    function updateDisk(pathId, data) {
+        const fill = document.getElementById(`disk-fill-${pathId}`);
+        const label = document.getElementById(`disk-label-${pathId}`);
+        if (fill) {
+            fill.style.width = `${data.percent}%`;
+            fill.textContent = `${data.percent}%`;
+        }
+        if (label) {
+            label.textContent = `${data.used}GB / ${data.total}GB`;
+        }
+    }
+
+    async function updateStats() {
+        try {
+            const response = await fetch("{{ url_for('api_system_monitor_stats') }}");
+            const data = await response.json();
+
+            // First time render
+            if (grid.querySelector('.spinner')) {
+                grid.innerHTML = '';
+                grid.appendChild(renderGauge('cpu', '{{ t("processor_cpu") }}', data.cpu_percent, '%', '{{ t("usage") }}'));
+                grid.appendChild(renderGauge('ram', '{{ t("memory_ram") }}', data.ram_percent, '%', `${data.ram_used_gb}/${data.ram_total_gb} GB`));
+                if (data.gpu.available && !data.gpu.error) {
+                    grid.appendChild(renderGauge('vram', '{{ t("graphics_memory") }}', data.gpu.vram_percent, '%', `${data.gpu.vram_used_gb}/${data.gpu.vram_total_gb} GB`));
+                    grid.appendChild(renderGauge('gputemp', '{{ t("graphics_temperature") }}', data.gpu.temp, '°C', data.gpu.name));
+                }
+                for (const path in data.disk) {
+                    if (!data.disk[path].error) {
+                        const pathId = path.replace(/[^a-zA-Z0-9]/g, '');
+                        grid.appendChild(renderDisk(pathId, `{{ t("disk_usage_path") }} (${path})`, data.disk[path]));
+                    }
+                }
+            } else { // Subsequent updates
+                updateGauge('cpu', data.cpu_percent, `${data.cpu_percent}%`);
+                updateGauge('ram', data.ram_percent, `${data.ram_percent}%`);
+                const ramLabel = document.querySelector('#gauge-ram .gauge-label');
+                if (ramLabel) ramLabel.textContent = `${data.ram_used_gb}/${data.ram_total_gb} GB`;
+
+                if (data.gpu.available && !data.gpu.error) {
+                    updateGauge('vram', data.gpu.vram_percent, `${data.gpu.vram_percent}%`);
+                    const vramLabel = document.querySelector('#gauge-vram .gauge-label');
+                    if (vramLabel) vramLabel.textContent = `${data.gpu.vram_used_gb}/${data.gpu.vram_total_gb} GB`;
+                    updateGauge('gputemp', (data.gpu.temp / 100), `${data.gpu.temp}<small>°C</small>`);
+                }
+                for (const path in data.disk) {
+                    if (!data.disk[path].error) {
+                        const pathId = path.replace(/[^a-zA-Z0-9]/g, '');
+                        updateDisk(pathId, data.disk[path]);
+                    }
+                }
+            }
+        } catch (error) {
+            grid.innerHTML = '<div class="stat-card"><h3>{{ t("error") }}</h3><p>{{ t("error_system_stats") }}.</p></div>';
+            console.error(error);
+            if(intervalId) clearInterval(intervalId);
+        }
+    }
+    
+    updateStats();
+    intervalId = setInterval(updateStats, 3000);
+});
+</script>
+{% endblock %}
