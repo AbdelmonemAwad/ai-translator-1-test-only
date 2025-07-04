@@ -1,24 +1,8 @@
 """
-Services Package
-Media service integrations for AI Translator
+Services package for AI Translator
+حزمة الخدمات للترجمان الآلي
 """
 
-from .media_services import (
-    MediaServicesManager,
-    PlexService,
-    JellyfinService, 
-    EmbyService,
-    RadarrService,
-    SonarrService,
-    create_service
-)
+from .remote_storage import RemoteStorageManager, setup_remote_mount, get_mount_status
 
-__all__ = [
-    'MediaServicesManager',
-    'PlexService',
-    'JellyfinService',
-    'EmbyService', 
-    'RadarrService',
-    'SonarrService',
-    'create_service'
-]
+__all__ = ['RemoteStorageManager', 'setup_remote_mount', 'get_mount_status']

@@ -1,218 +1,117 @@
-import sqlite3
+#!/usr/bin/env python3
+"""
+Database Setup for AI Translator
+إعداد قاعدة البيانات للترجمان الآلي
+"""
+
 import os
-import secrets
+import sys
+from models import db, Settings
 
-# --- الإعدادات الأولية ---
-PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
-DB_FILE = os.path.join(PROJECT_DIR, "library.db")
-
-def create_database():
-    """
-    Creates or updates the database schema and populates default settings.
-    This function is idempotent and safe to run multiple times.
-    """
-    print(f"INFO: Connecting to database at: {DB_FILE}")
-    conn = sqlite3.connect(DB_FILE)
-    cursor = conn.cursor()
-
-    print("INFO: Creating 'settings' table if it doesn't exist...")
-    cursor.execute('''
-        CREATE TABLE IF NOT EXISTS settings (
-            key TEXT PRIMARY KEY, 
-            value TEXT, 
-            section TEXT, 
-            type TEXT, 
-            description TEXT,
-            options TEXT
-        )
-    ''')
+def create_default_settings():
+    """إنشاء الإعدادات الافتراضية"""
     
-    print("INFO: Creating 'logs' table if it doesn't exist...")
-    cursor.execute('''
-        CREATE TABLE IF NOT EXISTS logs (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
-            level TEXT NOT NULL, /* INFO, WARNING, ERROR, FIX */
-            message TEXT NOT NULL,
-            details TEXT
-        )
-    ''')
-    
-    print("INFO: Creating 'media_files' table if it doesn't exist...")
-    cursor.execute('''
-        CREATE TABLE IF NOT EXISTS media_files (
-            id INTEGER PRIMARY KEY,
-            local_path TEXT NOT NULL UNIQUE,
-            media_type TEXT NOT NULL, -- 'movie' or 'tv'
-            has_arabic_subtitle BOOLEAN NOT NULL DEFAULT 0,
-            status TEXT DEFAULT 'pending', -- pending, processing, completed, failed
-            poster_url TEXT,
-            last_checked TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        )
-    ''')
-
-    print("INFO: Populating default settings...")
-    # قاموس الإعدادات الافتراضية
-    default_settings = {
-        'DEFAULT': {
-            'web_username': ('admin', 'text', 'اسم مستخدم لوحة التحكم'),
-            'web_password': ('your_strong_password', 'password', 'كلمة مرور لوحة التحكم'),
-            'secret_key': (secrets.token_hex(16), 'password', 'مفتاح سري للتطبيق (لا تقم بتغييره)'),
-            'items_per_page': ('24', 'number', 'عدد العناصر في صفحات إدارة الملفات'),
-            'default_language': ('ar', 'select', 'اللغة الافتراضية للواجهة'),
-            'server_port': ('5000', 'number', 'منفذ خادم التطبيق (يتطلب إعادة تشغيل الخدمة)'),
-            'server_host': ('0.0.0.0', 'text', 'عنوان IP للخادم (0.0.0.0 للوصول من جميع الأجهزة)')
-        },
-        'API': {
-            'radarr_url': ('http://192.168.0.250:8310', 'text', 'عنوان URL الخاص بـ Radarr'),
-            'radarr_api_key': ('bf791a422f26468cbc0508efc4ee3348', 'password', 'مفتاح API الخاص بـ Radarr'),
-            'sonarr_url': ('http://192.168.0.250:8989', 'text', 'عنوان URL الخاص بـ Sonarr'),
-            'sonarr_api_key': ('644b50d65b27484ca449093e1064eb4d', 'password', 'مفتاح API الخاص بـ Sonarr')
-        },
-        'REMOTE_STORAGE': {
-            # Connection and Protocol Settings
-            'remote_storage_enabled': ('false', 'select', 'تفعيل تحميل التخزين البعيد'),
-            'remote_storage_protocol': ('sftp', 'select', 'بروتوكول التخزين'),
-            'remote_storage_host': ('', 'text', 'عنوان الخادم'),
-            'remote_storage_port': ('22', 'number', 'منفذ الخادم'),
-            'remote_storage_timeout': ('30', 'number', 'مهلة الاتصال (ثانية)'),
-            
-            # Authentication Settings
-            'remote_storage_username': ('', 'text', 'اسم المستخدم'),
-            'remote_storage_password': ('', 'password', 'كلمة المرور'),
-            
-            # Remote Base Path
-            'remote_storage_path': ('/', 'text', 'مسار المجلد الجذري على التخزين البعيد'),
-            
-            # Mount Points for Remote Storage
-            'remote_storage_movies_mount': ('/mnt/remote/movies', 'text', 'نقطة تحميل الأفلام'),
-            'remote_storage_series_mount': ('/mnt/remote/series', 'text', 'نقطة تحميل المسلسلات'),
-            
-            # Auto Mount Settings
-            'remote_storage_auto_mount': ('false', 'select', 'التحميل التلقائي عند البدء')
-        },
-        'PATHS': {
-            # Remote Paths on Storage Server
-            'remote_movies_root': ('/volume1/Download/complete', 'text', 'مسار الأفلام الجذري على التخزين البعيد'),
-            'remote_tv_root': ('/volume1/tv show download', 'text', 'مسار المسلسلات الجذري على التخزين البعيد'),
-            
-            # Local Mount Points
-            'local_movies_mount': ('/mnt/remote/movies/complete', 'text', 'نقطة تركيب الأفلام على هذا الخادم'),
-            'local_tv_mount': ('/mnt/remote/tv', 'text', 'نقطة تركيب المسلسلات على هذا الخادم')
-        },
-        'MODELS': {
-            'ollama_api_url': ('http://localhost:11434/api/generate', 'text', 'عنوان URL لواجهة Ollama API (اتركه كما هو)'),
-            'ollama_model': ('llama3', 'text', 'نموذج اللغة المستخدم في Ollama'),
-            'whisper_model': ('medium.en', 'text', 'نموذج Whisper (مثل: base.en, small.en, medium.en)')
-        },
-        'CORRECTIONS': {
-            'rename_hi_srt': ('yes', 'boolean', 'إعادة تسمية ملفات .hi.srt إلى .ar.srt'),
-            'rename_generic_srt': ('yes', 'boolean', 'إعادة تسمية ملفات .srt العامة (فقط إذا لم توجد ترجمات أخرى)')
-        },
-        'DEVELOPMENT': {
-            'show_sample_data_functions': ('false', 'select', 'إظهار أزرار إنشاء البيانات الوهمية للاختبار'),
-            'show_database_admin': ('false', 'select', 'إظهار إدارة قاعدة البيانات المتقدمة'),
-            'show_debug_logs': ('false', 'select', 'إظهار سجلات التطوير والتصحيح'),
-            'enable_testing_features': ('false', 'select', 'تفعيل الميزات التجريبية'),
-            'show_system_info': ('true', 'select', 'إظهار معلومات النظام في لوحة التحكم'),
-            'allow_sample_creation': ('false', 'select', 'السماح بإنشاء بيانات تجريبية')
-        }
-    }
-    
-    # إضافة عمود options إذا لم يكن موجود (للتوافق مع قواعد البيانات الحالية)
-    try:
-        cursor.execute("ALTER TABLE settings ADD COLUMN options TEXT")
-        print("INFO: Added 'options' column to settings table")
-    except sqlite3.OperationalError:
-        pass  # العمود موجود بالفعل
-    
-    # حلقة لإدراج الإعدادات فقط إذا لم تكن موجودة
-    for section, keys in default_settings.items():
-        for key, (value, key_type, desc) in keys.items():
-            # إضافة خيارات للإعدادات من نوع select
-            options = None
-            if key == 'default_language':
-                options = 'ar:العربية,en:English'
-            elif key == 'remote_storage_enabled':
-                options = 'false:معطل,true:مفعل'
-            elif key == 'remote_storage_protocol':
-                options = 'sftp:SFTP (SSH),ftp:FTP,smb:SMB/CIFS,nfs:NFS'
-            elif key == 'remote_storage_auto_mount':
-                options = 'false:معطل,true:مفعل'
-            elif key in ['show_sample_data_functions', 'show_database_admin', 'show_debug_logs', 'enable_testing_features', 'show_system_info', 'allow_sample_creation', 'development_mode_enabled', 'enable_debug_mode', 'allow_dummy_data_creation', 'show_development_statistics', 'enable_experimental_features', 'developer_notifications', 'verbose_logging']:
-                options = 'false:مخفي,true:مرئي'
-            
-            cursor.execute(
-                "INSERT OR IGNORE INTO settings (section, key, value, type, description, options) VALUES (?, ?, ?, ?, ?, ?)",
-                (section, key, value, key_type, desc, options)
-            )
-    
-    # إنشاء جدول خدمات الوسائط
-    print("INFO: Creating 'media_services' table if it doesn't exist...")
-    cursor.execute('''
-        CREATE TABLE IF NOT EXISTS media_services (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            service_type TEXT NOT NULL,
-            service_name TEXT NOT NULL,
-            base_url TEXT NOT NULL,
-            api_key TEXT,
-            username TEXT,
-            password TEXT,
-            enabled BOOLEAN DEFAULT 1,
-            last_sync DATETIME,
-            sync_status TEXT DEFAULT 'pending',
-            error_message TEXT,
-            media_count INTEGER DEFAULT 0,
-            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-            updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
-        )
-    ''')
-    
-    # إنشاء جدول أشكال الفيديو المدعومة  
-    print("INFO: Creating 'video_formats' table if it doesn't exist...")
-    cursor.execute('''
-        CREATE TABLE IF NOT EXISTS video_formats (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            extension TEXT UNIQUE NOT NULL,
-            format_name TEXT NOT NULL,
-            supported BOOLEAN DEFAULT 1,
-            ffmpeg_codec TEXT,
-            description TEXT,
-            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-        )
-    ''')
-    
-    # إضافة أشكال الفيديو المدعومة
-    video_formats = [
-        ('mp4', 'MPEG-4 Part 14', True, 'h264', 'أكثر أشكال الفيديو شيوعاً'),
-        ('mkv', 'Matroska Video', True, 'h264', 'شكل مفتوح المصدر يدعم ترجمات متعددة'),
-        ('avi', 'Audio Video Interleave', True, 'xvid', 'شكل قديم ولكن مدعوم على نطاق واسع'),
-        ('mov', 'QuickTime Movie', True, 'h264', 'شكل Apple QuickTime'),
-        ('wmv', 'Windows Media Video', True, 'wmv', 'شكل Microsoft Windows Media'),
-        ('flv', 'Flash Video', True, 'flv', 'شكل Adobe Flash (قديم)'),
-        ('webm', 'WebM', True, 'vp8', 'شكل مفتوح المصدر للويب'),
-        ('m4v', 'iTunes Video', True, 'h264', 'شكل iTunes/QuickTime'),
-        ('3gp', '3GPP', True, 'h263', 'شكل للهواتف المحمولة'),
-        ('ogv', 'Ogg Video', True, 'theora', 'شكل مفتوح المصدر من Xiph'),
-        ('ts', 'Transport Stream', True, 'h264', 'شكل البث التلفزيوني'),
-        ('m2ts', 'Blu-ray Transport Stream', True, 'h264', 'شكل Blu-ray'),
-        ('vob', 'DVD Video Object', True, 'mpeg2video', 'شكل DVD'),
-        ('asf', 'Advanced Systems Format', True, 'wmv', 'شكل Microsoft متقدم'),
-        ('rm', 'RealMedia', True, 'rv40', 'شكل RealNetworks'),
-        ('rmvb', 'RealMedia Variable Bitrate', True, 'rv40', 'RealMedia بمعدل بت متغير')
+    default_settings = [
+        # DEFAULT section
+        {'key': 'admin_username', 'value': 'admin', 'section': 'DEFAULT', 'type': 'string', 'description': 'Admin username'},
+        {'key': 'admin_password', 'value': 'your_strong_password', 'section': 'DEFAULT', 'type': 'password', 'description': 'Admin password'},
+        {'key': 'user_language', 'value': 'ar', 'section': 'DEFAULT', 'type': 'select', 'options': 'ar:العربية,en:English', 'description': 'User interface language'},
+        {'key': 'user_theme', 'value': 'dark', 'section': 'DEFAULT', 'type': 'select', 'options': 'dark:داكن,light:فاتح,system:النظام', 'description': 'User interface theme'},
+        {'key': 'items_per_page', 'value': '24', 'section': 'DEFAULT', 'type': 'select', 'options': '12:12,24:24,48:48,96:96', 'description': 'Number of items per page'},
+        
+        # API section
+        {'key': 'sonarr_url', 'value': 'http://localhost:8989', 'section': 'API', 'type': 'string', 'description': 'Sonarr server URL'},
+        {'key': 'sonarr_api_key', 'value': '', 'section': 'API', 'type': 'string', 'description': 'Sonarr API key'},
+        {'key': 'radarr_url', 'value': 'http://localhost:7878', 'section': 'API', 'type': 'string', 'description': 'Radarr server URL'},
+        {'key': 'radarr_api_key', 'value': '', 'section': 'API', 'type': 'string', 'description': 'Radarr API key'},
+        {'key': 'ollama_url', 'value': 'http://localhost:11434', 'section': 'API', 'type': 'string', 'description': 'Ollama server URL'},
+        
+        # PATHS section
+        {'key': 'remote_movies_path', 'value': '/volume1/movies', 'section': 'PATHS', 'type': 'string', 'description': 'Remote movies directory path'},
+        {'key': 'remote_series_path', 'value': '/volume1/tv', 'section': 'PATHS', 'type': 'string', 'description': 'Remote TV series directory path'},
+        {'key': 'local_movies_mount', 'value': '/mnt/movies', 'section': 'PATHS', 'type': 'string', 'description': 'Local movies mount point'},
+        {'key': 'local_series_mount', 'value': '/mnt/series', 'section': 'PATHS', 'type': 'string', 'description': 'Local TV series mount point'},
+        
+        # MODELS section
+        {'key': 'whisper_model', 'value': 'medium.en', 'section': 'MODELS', 'type': 'select', 'options': 'tiny.en:Tiny,base.en:Base,small.en:Small,medium.en:Medium,large-v2:Large', 'description': 'Whisper speech-to-text model'},
+        {'key': 'ollama_model', 'value': 'llama3', 'section': 'MODELS', 'type': 'select', 'options': 'llama3:Llama 3,llama2:Llama 2,codellama:Code Llama,mistral:Mistral', 'description': 'Ollama translation model'},
+        {'key': 'whisper_model_gpu', 'value': 'auto', 'section': 'MODELS', 'type': 'select', 'options': 'auto:تلقائي,cpu:المعالج فقط', 'description': 'GPU allocation for Whisper'},
+        {'key': 'ollama_model_gpu', 'value': 'auto', 'section': 'MODELS', 'type': 'select', 'options': 'auto:تلقائي,cpu:المعالج فقط', 'description': 'GPU allocation for Ollama'},
+        
+        # CORRECTIONS section
+        {'key': 'auto_correct_filenames', 'value': 'true', 'section': 'CORRECTIONS', 'type': 'select', 'options': 'true:نعم,false:لا', 'description': 'Automatically correct subtitle filenames'},
+        {'key': 'correct_hi_to_ar', 'value': 'true', 'section': 'CORRECTIONS', 'type': 'select', 'options': 'true:نعم,false:لا', 'description': 'Convert .hi.srt files to .ar.srt'},
+        
+        # MEDIA_SERVICES section
+        {'key': 'plex_enabled', 'value': 'false', 'section': 'MEDIA_SERVICES', 'type': 'select', 'options': 'true:نعم,false:لا', 'description': 'Enable Plex integration'},
+        {'key': 'plex_url', 'value': 'http://localhost:32400', 'section': 'MEDIA_SERVICES', 'type': 'string', 'description': 'Plex server URL'},
+        {'key': 'plex_token', 'value': '', 'section': 'MEDIA_SERVICES', 'type': 'string', 'description': 'Plex authentication token'},
+        
+        {'key': 'jellyfin_enabled', 'value': 'false', 'section': 'MEDIA_SERVICES', 'type': 'select', 'options': 'true:نعم,false:لا', 'description': 'Enable Jellyfin integration'},
+        {'key': 'jellyfin_url', 'value': 'http://localhost:8096', 'section': 'MEDIA_SERVICES', 'type': 'string', 'description': 'Jellyfin server URL'},
+        {'key': 'jellyfin_api_key', 'value': '', 'section': 'MEDIA_SERVICES', 'type': 'string', 'description': 'Jellyfin API key'},
+        
+        {'key': 'emby_enabled', 'value': 'false', 'section': 'MEDIA_SERVICES', 'type': 'select', 'options': 'true:نعم,false:لا', 'description': 'Enable Emby integration'},
+        {'key': 'emby_url', 'value': 'http://localhost:8096', 'section': 'MEDIA_SERVICES', 'type': 'string', 'description': 'Emby server URL'},
+        {'key': 'emby_api_key', 'value': '', 'section': 'MEDIA_SERVICES', 'type': 'string', 'description': 'Emby API key'},
+        
+        # REMOTE_STORAGE section
+        {'key': 'remote_storage_enabled', 'value': 'false', 'section': 'REMOTE_STORAGE', 'type': 'select', 'options': 'true:نعم,false:لا', 'description': 'Enable remote storage mounting'},
+        {'key': 'remote_storage_protocol', 'value': 'sftp', 'section': 'REMOTE_STORAGE', 'type': 'select', 'options': 'sftp:SFTP,ftp:FTP,smb:SMB/CIFS,nfs:NFS', 'description': 'Remote storage protocol'},
+        {'key': 'remote_storage_host', 'value': '', 'section': 'REMOTE_STORAGE', 'type': 'string', 'description': 'Remote storage server hostname/IP'},
+        {'key': 'remote_storage_username', 'value': '', 'section': 'REMOTE_STORAGE', 'type': 'string', 'description': 'Remote storage username'},
+        {'key': 'remote_storage_password', 'value': '', 'section': 'REMOTE_STORAGE', 'type': 'password', 'description': 'Remote storage password'},
+        
+        # SYSTEM section
+        {'key': 'enable_monitoring', 'value': 'true', 'section': 'SYSTEM', 'type': 'select', 'options': 'true:نعم,false:لا', 'description': 'Enable system monitoring'},
+        {'key': 'log_level', 'value': 'INFO', 'section': 'SYSTEM', 'type': 'select', 'options': 'DEBUG:Debug,INFO:Info,WARNING:Warning,ERROR:Error', 'description': 'Application log level'},
+        
+        # DEVELOPMENT section
+        {'key': 'debug_mode', 'value': 'false', 'section': 'DEVELOPMENT', 'type': 'select', 'options': 'true:نعم,false:لا', 'description': 'Enable debug mode'},
+        {'key': 'enable_testing_features', 'value': 'false', 'section': 'DEVELOPMENT', 'type': 'select', 'options': 'true:نعم,false:لا', 'description': 'Enable testing features'},
     ]
     
-    cursor.executemany(
-        "INSERT OR IGNORE INTO video_formats (extension, format_name, supported, ffmpeg_codec, description) VALUES (?, ?, ?, ?, ?)",
-        video_formats
-    )
+    for setting in default_settings:
+        existing = Settings.query.filter_by(key=setting['key']).first()
+        if not existing:
+            new_setting = Settings(
+                key=setting['key'],
+                value=setting['value'],
+                section=setting['section'],
+                type=setting['type'],
+                options=setting.get('options', ''),
+                description=setting['description']
+            )
+            db.session.add(new_setting)
     
-    conn.commit()
-    conn.close()
-    print("\nSUCCESS: Database setup is complete!")
-    print("- Added support for media services integration")
-    print("- Added comprehensive video format support")  
-    print("You can now proceed to set up the web application files.")
+    try:
+        db.session.commit()
+        print("✓ Default settings created successfully")
+        return True
+    except Exception as e:
+        db.session.rollback()
+        print(f"✗ Error creating default settings: {str(e)}")
+        return False
+
+def setup_database():
+    """إعداد قاعدة البيانات الكاملة"""
+    try:
+        # Create all tables
+        db.create_all()
+        print("✓ Database tables created")
+        
+        # Create default settings
+        create_default_settings()
+        
+        print("✓ Database setup completed successfully")
+        return True
+        
+    except Exception as e:
+        print(f"✗ Database setup failed: {str(e)}")
+        return False
 
 if __name__ == "__main__":
-    create_database()
+    from app import app
+    
+    with app.app_context():
+        setup_database()

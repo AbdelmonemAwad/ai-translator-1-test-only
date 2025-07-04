@@ -353,11 +353,21 @@
                                     <i data-feather="star"></i>
                                     {{ t('quality_profile') }}
                                 </label>
-                                <select id="radarr_quality_profile" name="radarr_quality_profile" class="setting-select">
-                                    <option value="1" {% if current_settings.get('radarr_quality_profile') == '1' %}selected{% endif %}>HD-1080p</option>
-                                    <option value="2" {% if current_settings.get('radarr_quality_profile') == '2' %}selected{% endif %}>Ultra-HD</option>
-                                    <option value="3" {% if current_settings.get('radarr_quality_profile') == '3' %}selected{% endif %}>HD-720p/1080p</option>
-                                </select>
+                                <div class="input-group">
+                                    <select id="radarr_quality_profile" name="radarr_quality_profile" class="setting-select" disabled>
+                                        <option value="">جاري التحميل... Loading...</option>
+                                    </select>
+                                    <button type="button" class="btn-secondary" onclick="refreshRadarrProfiles()" title="تحديث قائمة الجودة">
+                                        <i data-feather="refresh-cw"></i>
+                                    </button>
+                                    <button type="button" class="btn-primary" onclick="selectAllProfiles('radarr')" title="اختيار الكل">
+                                        <i data-feather="check-square"></i>
+                                    </button>
+                                    <button type="button" class="btn-outline" onclick="clearAllProfiles('radarr')" title="مسح الكل">
+                                        <i data-feather="square"></i>
+                                    </button>
+                                </div>
+                                <div id="radarr_quality_status" class="setting-description"></div>
                             </div>
                         </div>
                     </div>
@@ -411,11 +421,21 @@
                                     <i data-feather="star"></i>
                                     {{ t('quality_profile') }}
                                 </label>
-                                <select id="sonarr_quality_profile" name="sonarr_quality_profile" class="setting-select">
-                                    <option value="1" {% if current_settings.get('sonarr_quality_profile') == '1' %}selected{% endif %}>HD-1080p</option>
-                                    <option value="2" {% if current_settings.get('sonarr_quality_profile') == '2' %}selected{% endif %}>Ultra-HD</option>
-                                    <option value="3" {% if current_settings.get('sonarr_quality_profile') == '3' %}selected{% endif %}>HD-720p/1080p</option>
-                                </select>
+                                <div class="input-group">
+                                    <select id="sonarr_quality_profile" name="sonarr_quality_profile" class="setting-select" disabled>
+                                        <option value="">جاري التحميل... Loading...</option>
+                                    </select>
+                                    <button type="button" class="btn-secondary" onclick="refreshSonarrProfiles()" title="تحديث قائمة الجودة">
+                                        <i data-feather="refresh-cw"></i>
+                                    </button>
+                                    <button type="button" class="btn-primary" onclick="selectAllProfiles('sonarr')" title="اختيار الكل">
+                                        <i data-feather="check-square"></i>
+                                    </button>
+                                    <button type="button" class="btn-outline" onclick="clearAllProfiles('sonarr')" title="مسح الكل">
+                                        <i data-feather="square"></i>
+                                    </button>
+                                </div>
+                                <div id="sonarr_quality_status" class="setting-description"></div>
                             </div>
                         </div>
                     </div>
@@ -710,6 +730,101 @@
     color: white;
 }
 
+.input-group {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.input-group .setting-select {
+    flex: 1;
+}
+
+.input-group .btn-secondary {
+    padding: 8px 12px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+}
+
+.input-group .btn-secondary:hover {
+    background: var(--accent-primary);
+    border-color: var(--accent-primary);
+    color: white;
+}
+
+.input-group .btn-secondary i {
+    font-size: 16px;
+}
+
+.input-group .btn-primary {
+    padding: 8px 12px;
+    background: var(--accent-primary);
+    border: 1px solid var(--accent-primary);
+    border-radius: 6px;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+}
+
+.input-group .btn-primary:hover {
+    background: var(--accent-secondary);
+    border-color: var(--accent-secondary);
+}
+
+.input-group .btn-outline {
+    padding: 8px 12px;
+    background: transparent;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+}
+
+.input-group .btn-outline:hover {
+    background: var(--bg-secondary);
+    border-color: var(--accent-primary);
+    color: var(--accent-primary);
+}
+
+.input-group .btn-primary i,
+.input-group .btn-outline i {
+    font-size: 16px;
+}
+
+/* Multiple select styling */
+.setting-select[multiple] {
+    min-height: 120px;
+    padding: 8px;
+}
+
+.setting-select[multiple] option {
+    padding: 4px 8px;
+    margin: 2px 0;
+    border-radius: 4px;
+}
+
+.setting-select[multiple] option:checked {
+    background: var(--accent-primary);
+    color: white;
+}
+
 .test-status.testing {
     background: #f59e0b;
     color: white;
@@ -873,4 +988,8 @@ function updateTestResults(service, result) {
     contentDiv.scrollTop = contentDiv.scrollHeight;
 }
 </script>
+
+<!-- Quality Profiles Management -->
+<script src="{{ url_for('static', filename='js/quality-profiles.js') }}"></script>
+
 {% endblock %}

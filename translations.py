@@ -31,6 +31,10 @@ TRANSLATIONS = {
         'ar': 'مراقبة النظام',
         'en': 'System Monitor'
     },
+    'standard_monitor': {
+        'ar': 'المراقب العادي',
+        'en': 'Standard Monitor'
+    },
     'graphics_memory': {
         'ar': 'ذاكرة كرت الشاشة',
         'en': 'Graphics Memory'
@@ -46,6 +50,30 @@ TRANSLATIONS = {
     'graphics_card': {
         'ar': 'كرت الشاشة',
         'en': 'Graphics Card'
+    },
+    'browse_folders': {
+        'ar': 'تصفح المجلدات',
+        'en': 'Browse Folders'
+    },
+    'close': {
+        'ar': 'إغلاق',
+        'en': 'Close'
+    },
+    'loading': {
+        'ar': 'جاري التحميل...',
+        'en': 'Loading...'
+    },
+    'selected_path': {
+        'ar': 'المسار المحدد',
+        'en': 'Selected Path'
+    },
+    'cancel': {
+        'ar': 'إلغاء',
+        'en': 'Cancel'
+    },
+    'select': {
+        'ar': 'تحديد',
+        'en': 'Select'
     },
     'processing_load': {
         'ar': 'حمل المعالجة',
@@ -219,6 +247,99 @@ TRANSLATIONS = {
         'ar': 'الإعدادات',
         'en': 'Settings'
     },
+    # New Settings Tabs System
+    'general_settings': {
+        'ar': 'الإعدادات العامة',
+        'en': 'General Settings'
+    },
+    'authentication': {
+        'ar': 'المصادقة',
+        'en': 'Authentication'
+    },
+    'authentication_security': {
+        'ar': 'المصادقة والأمان',
+        'en': 'Authentication & Security'
+    },
+    'ai_models': {
+        'ar': 'نماذج الذكاء الاصطناعي',
+        'en': 'AI Models'
+    },
+    'ai_models_configuration': {
+        'ar': 'إعداد نماذج الذكاء الاصطناعي',
+        'en': 'AI Models Configuration'
+    },
+    'file_paths': {
+        'ar': 'مسارات الملفات',
+        'en': 'File Paths'
+    },
+    'file_paths_configuration': {
+        'ar': 'إعداد مسارات الملفات',
+        'en': 'File Paths Configuration'
+    },
+    'media_servers': {
+        'ar': 'خوادم الوسائط',
+        'en': 'Media Servers'
+    },
+    'media_servers_integration': {
+        'ar': 'تكامل خوادم الوسائط',
+        'en': 'Media Servers Integration'
+    },
+    'system': {
+        'ar': 'النظام',
+        'en': 'System'
+    },
+    'system_configuration': {
+        'ar': 'إعدادات النظام',
+        'en': 'System Configuration'
+    },
+    'development': {
+        'ar': 'التطوير',
+        'en': 'Development'
+    },
+    'development_tools': {
+        'ar': 'أدوات التطوير',
+        'en': 'Development Tools'
+    },
+    'configuration': {
+        'ar': 'الإعداد',
+        'en': 'Configuration'
+    },
+    'security_info': {
+        'ar': 'معلومات الأمان',
+        'en': 'Security Information'
+    },
+    'security_description': {
+        'ar': 'هذه الإعدادات تتحكم في الوصول والأمان للتطبيق. تأكد من استخدام كلمات مرور قوية.',
+        'en': 'These settings control access and security for the application. Make sure to use strong passwords.'
+    },
+    'ai_models_info': {
+        'ar': 'معلومات نماذج الذكاء الاصطناعي',
+        'en': 'AI Models Information'
+    },
+    'ai_models_description': {
+        'ar': 'هذه الإعدادات تحدد نماذج Whisper و Ollama المستخدمة في الترجمة.',
+        'en': 'These settings determine the Whisper and Ollama models used for translation.'
+    },
+    'media_servers_info': {
+        'ar': 'معلومات خوادم الوسائط',
+        'en': 'Media Servers Information'
+    },
+    'media_servers_description': {
+        'ar': 'قم بإعداد الاتصال مع خوادم الوسائط مثل Plex و Jellyfin لمزامنة المكتبة.',
+        'en': 'Configure connections to media servers like Plex and Jellyfin for library synchronization.'
+    },
+    'development_warning': {
+        'ar': 'تحذير للمطورين',
+        'en': 'Developer Warning'
+    },
+    'development_warning_description': {
+        'ar': 'هذه الأدوات مخصصة للمطورين فقط. استخدمها بحذر في البيئة الإنتاجية.',
+        'en': 'These tools are for developers only. Use with caution in production environment.'
+    },
+    'saving': {
+        'ar': 'جاري الحفظ',
+        'en': 'Saving'
+    },
     'notifications': {
         'ar': 'الإشعارات',
         'en': 'Notifications'
@@ -281,6 +402,234 @@ TRANSLATIONS = {
         'ar': 'الترجمة',
         'en': 'Translation'
     },
+    
+    # Missing translations for new settings
+    'remote_password': {
+        'ar': 'كلمة المرور البعيدة',
+        'en': 'Remote Password'
+    },
+    'remote_password_description': {
+        'ar': 'كلمة مرور للوصول إلى التخزين البعيد',
+        'en': 'Password for accessing remote storage'
+    },
+    'enabled': {
+        'ar': 'مفعل',
+        'en': 'Enabled'
+    },
+    'disabled': {
+        'ar': 'معطل',
+        'en': 'Disabled'
+    },
+    'streaming_servers': {
+        'ar': 'خوادم البث',
+        'en': 'Streaming Servers'
+    },
+    'content_management': {
+        'ar': 'إدارة المحتوى',
+        'en': 'Content Management'
+    },
+    'connection_testing': {
+        'ar': 'اختبار الاتصال',
+        'en': 'Connection Testing'
+    },
+    'ai_models': {
+        'ar': 'نماذج الذكاء الاصطناعي',
+        'en': 'AI Models'
+    },
+    'gpu_configuration': {
+        'ar': 'إعدادات كرت الشاشة',
+        'en': 'GPU Configuration'
+    },
+    'api_configuration': {
+        'ar': 'إعدادات API',
+        'en': 'API Configuration'
+    },
+    'performance_settings': {
+        'ar': 'إعدادات الأداء',
+        'en': 'Performance Settings'
+    },
+    'monitoring_settings': {
+        'ar': 'إعدادات المراقبة',
+        'en': 'Monitoring Settings'
+    },
+    'development_settings': {
+        'ar': 'إعدادات التطوير',
+        'en': 'Development Settings'
+    },
+    'filename_corrections': {
+        'ar': 'تصحيح أسماء الملفات',
+        'en': 'Filename Corrections'
+    },
+    'subtitle_corrections': {
+        'ar': 'تصحيح الترجمات',
+        'en': 'Subtitle Corrections'
+    },
+    'automatic_corrections': {
+        'ar': 'التصحيح التلقائي',
+        'en': 'Automatic Corrections'
+    },
+    
+    # Advanced System Monitor translations
+    'advanced_system_monitor': {
+        'ar': 'مراقبة النظام المتطورة',
+        'en': 'Advanced System Monitor'
+    },
+    'realtime_system_monitoring': {
+        'ar': 'مراقبة النظام في الوقت الفعلي',
+        'en': 'Real-time System Monitoring'
+    },
+    'refresh': {
+        'ar': 'تحديث',
+        'en': 'Refresh'
+    },
+    'export': {
+        'ar': 'تصدير',
+        'en': 'Export'
+    },
+    'auto_refresh': {
+        'ar': 'التحديث التلقائي',
+        'en': 'Auto Refresh'
+    },
+    'stop_refresh': {
+        'ar': 'إيقاف التحديث',
+        'en': 'Stop Refresh'
+    },
+    'loading_system_health': {
+        'ar': 'جاري تحميل صحة النظام',
+        'en': 'Loading System Health'
+    },
+    'cpu_usage': {
+        'ar': 'استخدام المعالج',
+        'en': 'CPU Usage'
+    },
+    'memory_usage': {
+        'ar': 'استخدام الذاكرة',
+        'en': 'Memory Usage'
+    },
+    'storage_usage': {
+        'ar': 'استخدام التخزين',
+        'en': 'Storage Usage'
+    },
+    'network_activity': {
+        'ar': 'نشاط الشبكة',
+        'en': 'Network Activity'
+    },
+    'utilization': {
+        'ar': 'الاستخدام',
+        'en': 'Utilization'
+    },
+    'cores': {
+        'ar': 'النوى',
+        'en': 'Cores'
+    },
+    'frequency': {
+        'ar': 'التردد',
+        'en': 'Frequency'
+    },
+    'temperature': {
+        'ar': 'الحرارة',
+        'en': 'Temperature'
+    },
+    'load_average': {
+        'ar': 'متوسط التحميل',
+        'en': 'Load Average'
+    },
+    'total': {
+        'ar': 'الإجمالي',
+        'en': 'Total'
+    },
+    'used': {
+        'ar': 'المستخدم',
+        'en': 'Used'
+    },
+    'available': {
+        'ar': 'المتاح',
+        'en': 'Available'
+    },
+    'swap': {
+        'ar': 'الذاكرة الافتراضية',
+        'en': 'Swap'
+    },
+    'bytes_sent': {
+        'ar': 'البايتات المرسلة',
+        'en': 'Bytes Sent'
+    },
+    'bytes_received': {
+        'ar': 'البايتات المستقبلة',
+        'en': 'Bytes Received'
+    },
+    'packets_sent': {
+        'ar': 'الحزم المرسلة',
+        'en': 'Packets Sent'
+    },
+    'packets_received': {
+        'ar': 'الحزم المستقبلة',
+        'en': 'Packets Received'
+    },
+    'system_information': {
+        'ar': 'معلومات النظام',
+        'en': 'System Information'
+    },
+    'top_processes': {
+        'ar': 'أهم العمليات',
+        'en': 'Top Processes'
+    },
+    'process_name': {
+        'ar': 'اسم العملية',
+        'en': 'Process Name'
+    },
+    'status': {
+        'ar': 'الحالة',
+        'en': 'Status'
+    },
+    'last_update': {
+        'ar': 'آخر تحديث',
+        'en': 'Last Update'
+    },
+    'hostname': {
+        'ar': 'اسم الخادم',
+        'en': 'Hostname'
+    },
+    'operating_system': {
+        'ar': 'نظام التشغيل',
+        'en': 'Operating System'
+    },
+    'architecture': {
+        'ar': 'المعمارية',
+        'en': 'Architecture'
+    },
+    'uptime': {
+        'ar': 'مدة التشغيل',
+        'en': 'Uptime'
+    },
+    'cpu_name': {
+        'ar': 'اسم المعالج',
+        'en': 'CPU Name'
+    },
+    'memory_type': {
+        'ar': 'نوع الذاكرة',
+        'en': 'Memory Type'
+    },
+    'system_healthy': {
+        'ar': 'النظام سليم',
+        'en': 'System Healthy'
+    },
+    'system_warning': {
+        'ar': 'تحذير النظام',
+        'en': 'System Warning'
+    },
+    'system_critical': {
+        'ar': 'النظام في حالة حرجة',
+        'en': 'System Critical'
+    },
+    'system_unknown': {
+        'ar': 'حالة النظام غير معروفة',
+        'en': 'System Unknown'
+    },
+    'score': {
+        'ar': 'النتيجة',
+        'en': 'Score'
+    },
     'stop': {
         'ar': 'إيقاف',
         'en': 'Stop'
@@ -297,6 +646,36 @@ TRANSLATIONS = {
         'ar': 'الحالة',
         'en': 'Status'
     },
+    # File Browser Modal
+    'browse_folders': {
+        'ar': 'تصفح المجلدات',
+        'en': 'Browse Folders'
+    },
+    'close': {
+        'ar': 'إغلاق',
+        'en': 'Close'
+    },
+    'loading': {
+        'ar': 'جاري التحميل',
+        'en': 'Loading'
+    },
+    'selected_path': {
+        'ar': 'المسار المحدد',
+        'en': 'Selected Path'
+    },
+    'cancel': {
+        'ar': 'إلغاء',
+        'en': 'Cancel'
+    },
+    'select': {
+        'ar': 'اختيار',
+        'en': 'Select'
+    },
+    'browse': {
+        'ar': 'تصفح',
+        'en': 'Browse'
+    },
+    
     'quick_actions': {
         'ar': 'الإجراءات السريعة',
         'en': 'Quick Actions'
@@ -392,6 +771,42 @@ TRANSLATIONS = {
     'clear_sample_files': {
         'ar': 'حذف الملفات التجريبية',
         'en': 'Clear Sample Files'
+    },
+    'gpu_management_info': {
+        'ar': 'إدارة كروت الشاشة وتخصيصها للخدمات المختلفة',
+        'en': 'GPU management and allocation for different services'
+    },
+    'gpu_real_system_detection': {
+        'ar': 'النظام يستخدم الكشف الحقيقي لكروت الشاشة من النظام فقط',
+        'en': 'System uses real GPU detection from system hardware only'
+    },
+    'note': {
+        'ar': 'ملاحظة',
+        'en': 'Note'
+    },
+    'refresh_gpu_options': {
+        'ar': 'تحديث خيارات كروت الشاشة',
+        'en': 'Refresh GPU Options'
+    },
+    'smart_allocation': {
+        'ar': 'التوزيع الذكي',
+        'en': 'Smart Allocation'
+    },
+    'save_settings': {
+        'ar': 'حفظ الإعدادات',
+        'en': 'Save Settings'
+    },
+    'gpu_control_panel': {
+        'ar': 'لوحة التحكم في كروت الشاشة',
+        'en': 'GPU Control Panel'
+    },
+    'gpu_diagnosis': {
+        'ar': 'تشخيص كروت الشاشة',
+        'en': 'GPU Diagnosis'
+    },
+    'back_to_general': {
+        'ar': 'العودة للإعدادات العامة',
+        'en': 'Back to General'
     },
     'search': {
         'ar': 'بحث',
@@ -708,6 +1123,97 @@ TRANSLATIONS = {
     'support': {
         'ar': 'دعم',
         'en': 'Support'
+    },
+    'media_servers_removed': {
+        'ar': 'تم إزالة التكرار',
+        'en': 'Duplicates Removed'
+    },
+    'media_servers_moved_to_tabs': {
+        'ar': 'تم نقل خوادم الوسائط إلى نظام التبويبات الجديد لتجنب التكرار',
+        'en': 'Media servers have been moved to the new tabs system to avoid duplication'
+    },
+    'database_admin': {
+        'ar': 'إدارة قاعدة البيانات',
+        'en': 'Database Admin'
+    },
+    # System Performance Messages
+    'system_optimized': {
+        'ar': 'تم تحسين النظام بنجاح',
+        'en': 'System optimized successfully'
+    },
+    'optimization_failed': {
+        'ar': 'فشل في تحسين النظام',
+        'en': 'System optimization failed'
+    },
+    'cache_cleared': {
+        'ar': 'تم مسح ذاكرة التخزين المؤقت',
+        'en': 'Cache cleared successfully'
+    },
+    'cache_clear_failed': {
+        'ar': 'فشل في مسح ذاكرة التخزين المؤقت',
+        'en': 'Cache clear failed'
+    },
+    'clear_cache_confirm': {
+        'ar': 'هل أنت متأكد من مسح ذاكرة التخزين المؤقت؟',
+        'en': 'Are you sure you want to clear the cache?'
+    },
+    'services_restarted': {
+        'ar': 'تم إعادة تشغيل الخدمات بنجاح',
+        'en': 'Services restarted successfully'
+    },
+    'restart_failed': {
+        'ar': 'فشل في إعادة تشغيل الخدمات',
+        'en': 'Restart failed'
+    },
+    'restart_services_confirm': {
+        'ar': 'هل أنت متأكد من إعادة تشغيل الخدمات؟',
+        'en': 'Are you sure you want to restart services?'
+    },
+    # System Monitoring Messages
+    'metrics_exported': {
+        'ar': 'تم تصدير المقاييس بنجاح',
+        'en': 'Metrics exported successfully'
+    },
+    'export_failed': {
+        'ar': 'فشل في التصدير',
+        'en': 'Export failed'
+    },
+    'metrics_reset': {
+        'ar': 'تم إعادة تعيين المقاييس',
+        'en': 'Metrics reset successfully'
+    },
+    'reset_metrics_confirm': {
+        'ar': 'هل أنت متأكد من إعادة تعيين المقاييس؟',
+        'en': 'Are you sure you want to reset metrics?'
+    },
+    # Development Messages
+    'sample_data_created': {
+        'ar': 'تم إنشاء البيانات التجريبية',
+        'en': 'Sample data created successfully'
+    },
+    'sample_data_failed': {
+        'ar': 'فشل في إنشاء البيانات التجريبية',
+        'en': 'Sample data creation failed'
+    },
+    'sample_data_cleared': {
+        'ar': 'تم مسح البيانات التجريبية',
+        'en': 'Sample data cleared successfully'
+    },
+    'clear_sample_failed': {
+        'ar': 'فشل في مسح البيانات التجريبية',
+        'en': 'Clear sample data failed'
+    },
+    'clear_sample_data_confirm': {
+        'ar': 'هل أنت متأكد من مسح البيانات التجريبية؟',
+        'en': 'Are you sure you want to clear sample data?'
+    },
+    'diagnostics_completed': {
+        'ar': 'تم إجراء التشخيص بنجاح',
+        'en': 'Diagnostics completed successfully'
+    },
+    'diagnostics_failed': {
+        'ar': 'فشل في إجراء التشخيص',
+        'en': 'Diagnostics failed'
     },
     
     # Supported Services Section
@@ -1137,6 +1643,66 @@ TRANSLATIONS = {
         'en': 'GPU Management',
         'ar': 'إدارة كروت الشاشة'
     },
+    'gpu_status': {
+        'en': 'GPU Status',
+        'ar': 'حالة كروت الشاشة'
+    },
+    'gpu_settings': {
+        'en': 'GPU Settings',
+        'ar': 'إعدادات كروت الشاشة'
+    },
+    'refresh_gpu_options': {
+        'en': 'Refresh GPU Options',
+        'ar': 'تحديث خيارات كروت الشاشة'
+    },
+    'smart_allocation': {
+        'en': 'Smart Allocation',
+        'ar': 'التوزيع الذكي'
+    },
+    'installation_helper': {
+        'en': 'Installation Helper',
+        'ar': 'مساعد التثبيت'
+    },
+    'loading_gpu_info': {
+        'en': 'Loading GPU Information',
+        'ar': 'تحميل معلومات كروت الشاشة'
+    },
+    'multi_gpu_detected': {
+        'ar': 'تم اكتشاف عدة كروت شاشة',
+        'en': 'Multiple GPUs Detected'
+    },
+    'gpu_allocation_strategy': {
+        'ar': 'استراتيجية توزيع كروت الشاشة',
+        'en': 'GPU Allocation Strategy'
+    },
+    'smart_allocation_applied': {
+        'ar': 'تم تطبيق التوزيع الذكي بنجاح',
+        'en': 'Smart Allocation Applied Successfully'
+    },
+    'performance_benefits': {
+        'ar': 'فوائد الأداء',
+        'en': 'Performance Benefits'
+    },
+    'dedicated_gpu_allocation': {
+        'ar': 'توزيع مخصص لكروت الشاشة',
+        'en': 'Dedicated GPU Allocation'
+    },
+    'gpu_memory_usage': {
+        'ar': 'استخدام ذاكرة كارت الشاشة',
+        'en': 'GPU Memory Usage'
+    },
+    'optimal_performance': {
+        'ar': 'أداء أمثل',
+        'en': 'Optimal Performance'
+    },
+    'power_consumption': {
+        'ar': 'استهلاك الطاقة',
+        'en': 'Power Consumption'
+    },
+    'multi_gpu_optimization': {
+        'ar': 'تحسين متعدد كروت الشاشة',
+        'en': 'Multi-GPU Optimization'
+    },
     'reset_database': {
         'ar': 'إعادة تعيين البيانات',
         'en': 'Reset Database'
@@ -1324,6 +1890,590 @@ TRANSLATIONS = {
     'save_all': {
         'ar': 'حفظ الكل',
         'en': 'Save All'
+    },
+    'application_settings': {
+        'ar': 'إعدادات التطبيق',
+        'en': 'Application Settings'
+    },
+    'general_settings': {
+        'ar': 'الإعدادات العامة',
+        'en': 'General Settings'
+    },
+    'ai_models_configuration': {
+        'ar': 'تكوين نماذج الذكاء الاصطناعي',
+        'en': 'AI Models Configuration'
+    },
+    'ai_models_info': {
+        'ar': 'معلومات النماذج',
+        'en': 'Models Information'
+    },
+    'ai_models_description': {
+        'ar': 'قم بتكوين نماذج Whisper و Ollama المستخدمة في عملية الترجمة',
+        'en': 'Configure Whisper and Ollama models used in the translation process'
+    },
+    'whisper_model_description': {
+        'ar': 'نموذج Whisper لتحويل الكلام إلى نص - النماذج الأكبر أكثر دقة لكنها أبطأ',
+        'en': 'Whisper model for speech-to-text - Larger models are more accurate but slower'
+    },
+    'ollama_model_description': {
+        'ar': 'نموذج Ollama للترجمة من الإنجليزية إلى العربية',
+        'en': 'Ollama model for English to Arabic translation'
+    },
+    'gpu_configuration': {
+        'ar': 'تكوين كروت الشاشة',
+        'en': 'GPU Configuration'
+    },
+    'gpu_info': {
+        'ar': 'معلومات كروت الشاشة',
+        'en': 'GPU Information'
+    },
+    'gpu_description': {
+        'ar': 'قم بتخصيص كروت الشاشة لتسريع عمليات الذكاء الاصطناعي',
+        'en': 'Allocate GPUs to accelerate AI processing operations'
+    },
+    'whisper_gpu_allocation': {
+        'ar': 'تخصيص كارت الشاشة لـ Whisper',
+        'en': 'Whisper GPU Allocation'
+    },
+    'whisper_gpu_description': {
+        'ar': 'اختر كارت الشاشة المستخدم لمعالجة Whisper',
+        'en': 'Select GPU used for Whisper processing'
+    },
+    'ollama_gpu_allocation': {
+        'ar': 'تخصيص كارت الشاشة لـ Ollama',
+        'en': 'Ollama GPU Allocation'
+    },
+    'ollama_gpu_description': {
+        'ar': 'اختر كارت الشاشة المستخدم لمعالجة Ollama',
+        'en': 'Select GPU used for Ollama processing'
+    },
+    'api_configuration': {
+        'ar': 'تكوين واجهات البرمجة',
+        'en': 'API Configuration'
+    },
+    'ollama_api_description': {
+        'ar': 'عنوان خادم Ollama API - استخدم localhost:11434 للإعداد المحلي',
+        'en': 'Ollama API server URL - Use localhost:11434 for local setup'
+    },
+    'api_timeout_description': {
+        'ar': 'مهلة انتظار الاتصال بواجهات البرمجة بالثواني',
+        'en': 'API connection timeout in seconds'
+    },
+    'seconds': {
+        'ar': 'ثانية',
+        'en': 'seconds'
+    },
+    'saving': {
+        'ar': 'جاري الحفظ',
+        'en': 'Saving'
+    },
+    'save_settings': {
+        'ar': 'حفظ الإعدادات',
+        'en': 'Save Settings'
+    },
+    'language_description': {
+        'ar': 'اللغة الافتراضية لواجهة التطبيق',
+        'en': 'Default language for application interface'
+    },
+    'theme_description': {
+        'ar': 'المظهر الافتراضي للتطبيق',
+        'en': 'Default application theme'
+    },
+    'items_per_page_description': {
+        'ar': 'عدد العناصر المعروضة في كل صفحة',
+        'en': 'Number of items displayed per page'
+    },
+    'auto_refresh_description': {
+        'ar': 'فترة التحديث التلقائي للبيانات',
+        'en': 'Automatic data refresh interval'
+    },
+    'auto_correct_description': {
+        'ar': 'تصحيح أسماء ملفات الترجمة تلقائياً (.hi.srt إلى .ar.srt)',
+        'en': 'Automatically correct subtitle filenames (.hi.srt to .ar.srt)'
+    },
+    'overview': {
+        'ar': 'نظرة عامة',
+        'en': 'Overview'
+    },
+    'plex_server': {
+        'ar': 'خادم Plex',
+        'en': 'Plex Server'
+    },
+    'jellyfin_server': {
+        'ar': 'خادم Jellyfin',
+        'en': 'Jellyfin Server'
+    },
+    'radarr_movies': {
+        'ar': 'أفلام Radarr',
+        'en': 'Radarr Movies'
+    },
+    'sonarr_series': {
+        'ar': 'مسلسلات Sonarr',
+        'en': 'Sonarr Series'
+    },
+    'authentication_settings': {
+        'ar': 'إعدادات المصادقة',
+        'en': 'Authentication Settings'
+    },
+    'security_info': {
+        'ar': 'معلومات الأمان',
+        'en': 'Security Information'
+    },
+    'authentication_description': {
+        'ar': 'قم بتكوين إعدادات الأمان والمصادقة للتطبيق',
+        'en': 'Configure security and authentication settings for the application'
+    },
+    'admin_username_description': {
+        'ar': 'اسم المستخدم للوصول إلى لوحة الإدارة',
+        'en': 'Username for admin panel access'
+    },
+    'admin_password_description': {
+        'ar': 'كلمة المرور للوصول إلى لوحة الإدارة (اتركها فارغة لعدم التغيير)',
+        'en': 'Password for admin panel access (leave empty to keep unchanged)'
+    },
+    'session_timeout_description': {
+        'ar': 'مدة انتهاء صلاحية الجلسة',
+        'en': 'Session timeout duration'
+    },
+    'auto_logout_description': {
+        'ar': 'تسجيل الخروج التلقائي عند عدم النشاط',
+        'en': 'Automatic logout on inactivity'
+    },
+    'minutes': {
+        'ar': 'دقيقة',
+        'en': 'minutes'
+    },
+    'hours': {
+        'ar': 'ساعة',
+        'en': 'hours'
+    },
+    'days': {
+        'ar': 'أيام',
+        'en': 'days'
+    },
+    'file_paths_settings': {
+        'ar': 'إعدادات مسارات الملفات',
+        'en': 'File Paths Settings'
+    },
+    'paths_info': {
+        'ar': 'معلومات المسارات',
+        'en': 'Paths Information'
+    },
+    'paths_description': {
+        'ar': 'قم بتكوين مسارات الملفات للأفلام والمسلسلات',
+        'en': 'Configure file paths for movies and series'
+    },
+    'remote_movies_description': {
+        'ar': 'مسار الأفلام على التخزين البعيد (مثل Synology NAS)',
+        'en': 'Movies path on remote storage (e.g., Synology NAS)'
+    },
+    'remote_series_description': {
+        'ar': 'مسار المسلسلات على التخزين البعيد',
+        'en': 'Series path on remote storage'
+    },
+    'local_movies_description': {
+        'ar': 'نقطة تحميل الأفلام المحلية على الخادم',
+        'en': 'Local movies mount point on server'
+    },
+    'local_series_description': {
+        'ar': 'نقطة تحميل المسلسلات المحلية على الخادم',
+        'en': 'Local series mount point on server'
+    },
+    'system_settings': {
+        'ar': 'إعدادات النظام',
+        'en': 'System Settings'
+    },
+    'system_info': {
+        'ar': 'معلومات النظام',
+        'en': 'System Information'
+    },
+    'system_description': {
+        'ar': 'قم بتكوين إعدادات النظام والخادم',
+        'en': 'Configure system and server settings'
+    },
+    'server_host_description': {
+        'ar': 'عنوان IP الذي يستمع إليه الخادم (استخدم 0.0.0.0 للاستماع على جميع الشبكات)',
+        'en': 'IP address the server listens on (use 0.0.0.0 to listen on all networks)'
+    },
+    'server_port_description': {
+        'ar': 'رقم المنفذ الذي يعمل عليه الخادم',
+        'en': 'Port number the server runs on'
+    },
+    'log_level_description': {
+        'ar': 'مستوى التفاصيل في ملفات السجل',
+        'en': 'Level of detail in log files'
+    },
+    'max_log_size_description': {
+        'ar': 'الحد الأقصى لحجم ملف السجل قبل الأرشفة',
+        'en': 'Maximum log file size before archiving'
+    },
+    'auto_cleanup_description': {
+        'ar': 'تنظيف ملفات السجل القديمة تلقائياً',
+        'en': 'Automatically clean up old log files'
+    },
+    'cleanup_interval_description': {
+        'ar': 'فترة تنظيف ملفات السجل القديمة',
+        'en': 'Interval for cleaning up old log files'
+    },
+    'development_settings': {
+        'ar': 'إعدادات التطوير',
+        'en': 'Development Settings'
+    },
+    'development_warning': {
+        'ar': 'تحذير التطوير',
+        'en': 'Development Warning'
+    },
+    'development_description': {
+        'ar': 'هذه الإعدادات مخصصة للمطورين فقط - استخدمها بحذر',
+        'en': 'These settings are for developers only - use with caution'
+    },
+    'debug_mode_description': {
+        'ar': 'تفعيل وضع التطوير مع معلومات تفصيلية إضافية',
+        'en': 'Enable debug mode with additional detailed information'
+    },
+    'testing_features_description': {
+        'ar': 'تفعيل ميزات الاختبار والبيانات التجريبية',
+        'en': 'Enable testing features and sample data'
+    },
+    'sql_queries_description': {
+        'ar': 'عرض استعلامات قاعدة البيانات في السجلات',
+        'en': 'Show database queries in logs'
+    },
+    'performance_monitoring_description': {
+        'ar': 'مراقبة أداء التطبيق وتسجيل البيانات',
+        'en': 'Monitor application performance and log data'
+    },
+    'development_tools': {
+        'ar': 'أدوات التطوير',
+        'en': 'Development Tools'
+    },
+    'sample_data_description': {
+        'ar': 'إنشاء وإدارة البيانات التجريبية للاختبار',
+        'en': 'Create and manage sample data for testing'
+    },
+    'cache_description': {
+        'ar': 'إدارة ذاكرة التخزين المؤقت للتطبيق',
+        'en': 'Manage application cache'
+    },
+    'logs_description': {
+        'ar': 'إدارة وتصدير ملفات السجل',
+        'en': 'Manage and export log files'
+    },
+    'media_services_overview': {
+        'ar': 'نظرة عامة على خوادم الوسائط',
+        'en': 'Media Services Overview'
+    },
+    'emby_description': {
+        'ar': 'خادم وسائط مفتوح المصدر مع ميزات متقدمة',
+        'en': 'Open-source media server with advanced features'
+    },
+    'kodi_description': {
+        'ar': 'مركز وسائط منزلي متكامل ومجاني',
+        'en': 'Free and comprehensive home media center'
+    },
+    'radarr_description': {
+        'ar': 'مدير أفلام تلقائي مع تكامل مع التورنت',
+        'en': 'Automatic movie manager with torrent integration'
+    },
+    'sonarr_description': {
+        'ar': 'مدير مسلسلات تلقائي مع جدولة الحلقات',
+        'en': 'Automatic series manager with episode scheduling'
+    },
+    'plex_server_configuration': {
+        'ar': 'تكوين خادم Plex',
+        'en': 'Plex Server Configuration'
+    },
+    'jellyfin_server_configuration': {
+        'ar': 'تكوين خادم Jellyfin',
+        'en': 'Jellyfin Server Configuration'
+    },
+    'emby_server_configuration': {
+        'ar': 'تكوين خادم Emby',
+        'en': 'Emby Server Configuration'
+    },
+    'kodi_server_configuration': {
+        'ar': 'تكوين مركز Kodi',
+        'en': 'Kodi Media Center Configuration'
+    },
+    'radarr_server_configuration': {
+        'ar': 'تكوين خادم Radarr',
+        'en': 'Radarr Server Configuration'
+    },
+    'sonarr_server_configuration': {
+        'ar': 'تكوين خادم Sonarr',
+        'en': 'Sonarr Server Configuration'
+    },
+    'remote_storage_configuration': {
+        'ar': 'تكوين التخزين البعيد',
+        'en': 'Remote Storage Configuration'
+    },
+    'remote_storage_info': {
+        'ar': 'معلومات التخزين البعيد',
+        'en': 'Remote Storage Information'
+    },
+    'remote_storage_description': {
+        'ar': 'قم بتكوين إعدادات التخزين البعيد مثل NAS أو خوادم الملفات',
+        'en': 'Configure remote storage settings such as NAS or file servers'
+    },
+    'enable_plex': {
+        'ar': 'تفعيل Plex',
+        'en': 'Enable Plex'
+    },
+    'enable_jellyfin': {
+        'ar': 'تفعيل Jellyfin',
+        'en': 'Enable Jellyfin'
+    },
+    'enable_emby': {
+        'ar': 'تفعيل Emby',
+        'en': 'Enable Emby'
+    },
+    'enable_kodi': {
+        'ar': 'تفعيل Kodi',
+        'en': 'Enable Kodi'
+    },
+    'enable_radarr': {
+        'ar': 'تفعيل Radarr',
+        'en': 'Enable Radarr'
+    },
+    'enable_sonarr': {
+        'ar': 'تفعيل Sonarr',
+        'en': 'Enable Sonarr'
+    },
+    'enable_remote_storage': {
+        'ar': 'تفعيل التخزين البعيد',
+        'en': 'Enable Remote Storage'
+    },
+    'plex_enabled_description': {
+        'ar': 'تفعيل التكامل مع خادم Plex',
+        'en': 'Enable integration with Plex server'
+    },
+    'jellyfin_enabled_description': {
+        'ar': 'تفعيل التكامل مع خادم Jellyfin',
+        'en': 'Enable integration with Jellyfin server'
+    },
+    'emby_enabled_description': {
+        'ar': 'تفعيل التكامل مع خادم Emby',
+        'en': 'Enable integration with Emby server'
+    },
+    'kodi_enabled_description': {
+        'ar': 'تفعيل التكامل مع مركز Kodi',
+        'en': 'Enable integration with Kodi media center'
+    },
+    'radarr_enabled_description': {
+        'ar': 'تفعيل التكامل مع خادم Radarr للأفلام',
+        'en': 'Enable integration with Radarr movie server'
+    },
+    'sonarr_enabled_description': {
+        'ar': 'تفعيل التكامل مع خادم Sonarr للمسلسلات',
+        'en': 'Enable integration with Sonarr series server'
+    },
+    'remote_storage_enabled_description': {
+        'ar': 'تفعيل التخزين البعيد مثل NAS أو خوادم الملفات',
+        'en': 'Enable remote storage such as NAS or file servers'
+    },
+    'plex_url_description': {
+        'ar': 'عنوان URL لخادم Plex',
+        'en': 'Plex server URL'
+    },
+    'jellyfin_url_description': {
+        'ar': 'عنوان URL لخادم Jellyfin',
+        'en': 'Jellyfin server URL'
+    },
+    'emby_url_description': {
+        'ar': 'عنوان URL لخادم Emby',
+        'en': 'Emby server URL'
+    },
+    'kodi_url_description': {
+        'ar': 'عنوان URL لمركز Kodi',
+        'en': 'Kodi media center URL'
+    },
+    'radarr_url_description': {
+        'ar': 'عنوان URL لخادم Radarr',
+        'en': 'Radarr server URL'
+    },
+    'sonarr_url_description': {
+        'ar': 'عنوان URL لخادم Sonarr',
+        'en': 'Sonarr server URL'
+    },
+    'plex_token_description': {
+        'ar': 'رمز المصادقة لخادم Plex (X-Plex-Token)',
+        'en': 'Plex server authentication token (X-Plex-Token)'
+    },
+    'jellyfin_api_key_description': {
+        'ar': 'مفتاح API لخادم Jellyfin',
+        'en': 'Jellyfin server API key'
+    },
+    'emby_api_key_description': {
+        'ar': 'مفتاح API لخادم Emby',
+        'en': 'Emby server API key'
+    },
+    'kodi_username_description': {
+        'ar': 'اسم المستخدم لمركز Kodi',
+        'en': 'Kodi media center username'
+    },
+    'kodi_password_description': {
+        'ar': 'كلمة المرور لمركز Kodi',
+        'en': 'Kodi media center password'
+    },
+    'radarr_api_key_description': {
+        'ar': 'مفتاح API لخادم Radarr',
+        'en': 'Radarr server API key'
+    },
+    'sonarr_api_key_description': {
+        'ar': 'مفتاح API لخادم Sonarr',
+        'en': 'Sonarr server API key'
+    },
+    'remote_host_description': {
+        'ar': 'عنوان IP أو اسم المضيف للتخزين البعيد',
+        'en': 'IP address or hostname of remote storage'
+    },
+    'remote_mount_type_description': {
+        'ar': 'نوع بروتوكول التخزين البعيد',
+        'en': 'Remote storage protocol type'
+    },
+    'mount_options_description': {
+        'ar': 'خيارات التحميل للتخزين البعيد',
+        'en': 'Mount options for remote storage'
+    },
+    'translation_corrections_settings': {
+        'ar': 'إعدادات تصحيح الترجمات',
+        'en': 'Translation Corrections Settings'
+    },
+    'corrections_info': {
+        'ar': 'معلومات التصحيحات',
+        'en': 'Corrections Information'
+    },
+    'corrections_description': {
+        'ar': 'قم بتكوين إعدادات تصحيح ملفات الترجمة وإعادة تسميتها',
+        'en': 'Configure translation file correction and renaming settings'
+    },
+    'auto_replace_hi_ar': {
+        'ar': 'استبدال .hi.srt بـ .ar.srt تلقائياً',
+        'en': 'Auto Replace .hi.srt with .ar.srt'
+    },
+    'auto_replace_hi_ar_description': {
+        'ar': 'استبدال امتداد .hi.srt بـ .ar.srt تلقائياً',
+        'en': 'Automatically replace .hi.srt extension with .ar.srt'
+    },
+    'backup_original_files': {
+        'ar': 'نسخ احتياطي من الملفات الأصلية',
+        'en': 'Backup Original Files'
+    },
+    'backup_original_files_description': {
+        'ar': 'إنشاء نسخة احتياطية من الملفات الأصلية قبل التصحيح',
+        'en': 'Create backup of original files before correction'
+    },
+    'correction_patterns': {
+        'ar': 'أنماط التصحيح',
+        'en': 'Correction Patterns'
+    },
+    'correction_patterns_description': {
+        'ar': 'أنماط أسماء الملفات التي يجب البحث عنها للتصحيح (واحد في كل سطر)',
+        'en': 'File name patterns to search for correction (one per line)'
+    },
+    'correction_replacement': {
+        'ar': 'الاستبدال',
+        'en': 'Replacement'
+    },
+    'correction_replacement_description': {
+        'ar': 'النص الذي سيحل محل الأنماط المطابقة',
+        'en': 'Text that will replace matching patterns'
+    },
+    'file_operations': {
+        'ar': 'عمليات الملفات',
+        'en': 'File Operations'
+    },
+    'skip_existing_files': {
+        'ar': 'تخطي الملفات الموجودة',
+        'en': 'Skip Existing Files'
+    },
+    'skip_existing_files_description': {
+        'ar': 'تخطي الملفات التي تم تصحيحها مسبقاً',
+        'en': 'Skip files that have been corrected previously'
+    },
+    'overwrite_confirmation': {
+        'ar': 'تأكيد الكتابة فوق الملفات',
+        'en': 'Overwrite Confirmation'
+    },
+    'overwrite_confirmation_description': {
+        'ar': 'طلب التأكيد قبل الكتابة فوق الملفات الموجودة',
+        'en': 'Ask for confirmation before overwriting existing files'
+    },
+    'file_naming_convention': {
+        'ar': 'نظام تسمية الملفات',
+        'en': 'File Naming Convention'
+    },
+    'file_naming_convention_description': {
+        'ar': 'طريقة تسمية الملفات المصححة',
+        'en': 'Method for naming corrected files'
+    },
+    'replace_extension': {
+        'ar': 'استبدال الامتداد',
+        'en': 'Replace Extension'
+    },
+    'append_suffix': {
+        'ar': 'إضافة لاحقة',
+        'en': 'Append Suffix'
+    },
+    'add_prefix': {
+        'ar': 'إضافة بادئة',
+        'en': 'Add Prefix'
+    },
+    'correction_tools': {
+        'ar': 'أدوات التصحيح',
+        'en': 'Correction Tools'
+    },
+    'scan_corrections': {
+        'ar': 'فحص التصحيحات',
+        'en': 'Scan Corrections'
+    },
+    'scan_corrections_description': {
+        'ar': 'فحص الملفات التي تحتاج للتصحيح',
+        'en': 'Scan files that need correction'
+    },
+    'run_corrections': {
+        'ar': 'تشغيل التصحيحات',
+        'en': 'Run Corrections'
+    },
+    'run_corrections_description': {
+        'ar': 'تطبيق التصحيحات على الملفات المحددة',
+        'en': 'Apply corrections to selected files'
+    },
+    'preview_changes': {
+        'ar': 'معاينة التغييرات',
+        'en': 'Preview Changes'
+    },
+    'preview_changes_description': {
+        'ar': 'معاينة التغييرات قبل التطبيق',
+        'en': 'Preview changes before applying'
+    },
+    'start_scan': {
+        'ar': 'بدء الفحص',
+        'en': 'Start Scan'
+    },
+    'preview': {
+        'ar': 'معاينة',
+        'en': 'Preview'
+    },
+    'browse_folders': {
+        'ar': 'تصفح المجلدات',
+        'en': 'Browse Folders'
+    },
+    'loading': {
+        'ar': 'جاري التحميل',
+        'en': 'Loading'
+    },
+    'error_loading_folders': {
+        'ar': 'خطأ في تحميل المجلدات',
+        'en': 'Error loading folders'
+    },
+    'cancel': {
+        'ar': 'إلغاء',
+        'en': 'Cancel'
+    },
+    'select': {
+        'ar': 'اختيار',
+        'en': 'Select'
     },
     'general_settings': {
         'ar': 'الإعدادات العامة',
@@ -2652,6 +3802,441 @@ TRANSLATIONS = {
     'rhel_compatible_distributions': {
         'ar': 'توزيعات متوافقة مع RHEL',
         'en': 'RHEL-compatible distributions'
+    },
+    'remote_movies_path': {
+        'ar': 'مسار الأفلام البعيد',
+        'en': 'Remote Movies Path'
+    },
+    'remote_series_path': {
+        'ar': 'مسار المسلسلات البعيد',
+        'en': 'Remote Series Path'
+    },
+    'local_movies_mount': {
+        'ar': 'نقطة تحميل الأفلام المحلية',
+        'en': 'Local Movies Mount Point'
+    },
+    'local_series_mount': {
+        'ar': 'نقطة تحميل المسلسلات المحلية',
+        'en': 'Local Series Mount Point'
+    },
+    'gpu_allocation_updated': {
+        'ar': 'تم تحديث توزيع كروت الشاشة بنجاح',
+        'en': 'GPU allocation updated successfully'
+    },
+    'gpu_auto_allocation_applied': {
+        'ar': 'تم تطبيق التوزيع التلقائي لكروت الشاشة',
+        'en': 'GPU auto-allocation applied successfully'
+    },
+    'gpu_management': {
+        'ar': 'إدارة كروت الشاشة',
+        'en': 'GPU Management'
+    },
+    'gpu_status': {
+        'ar': 'حالة كروت الشاشة',
+        'en': 'GPU Status'
+    },
+    'gpu_allocation': {
+        'ar': 'توزيع كروت الشاشة',
+        'en': 'GPU Allocation'
+    },
+    'whisper_gpu': {
+        'ar': 'كرت الشاشة المخصص لـ Whisper',
+        'en': 'Whisper GPU'
+    },
+    'ollama_gpu': {
+        'ar': 'كرت الشاشة المخصص لـ Ollama',
+        'en': 'Ollama GPU'
+    },
+    'gpu_detection': {
+        'ar': 'اكتشاف كروت الشاشة',
+        'en': 'GPU Detection'
+    },
+    'nvidia_available': {
+        'ar': 'برامج تشغيل NVIDIA متاحة',
+        'en': 'NVIDIA Drivers Available'
+    },
+    'refresh_gpu_info': {
+        'ar': 'تحديث معلومات كروت الشاشة',
+        'en': 'Refresh GPU Information'
+    },
+    'auto_allocate_gpu': {
+        'ar': 'توزيع تلقائي لكروت الشاشة',
+        'en': 'Auto-Allocate GPUs'
+    },
+    'gpu_memory_usage': {
+        'ar': 'استخدام ذاكرة كرت الشاشة',
+        'en': 'GPU Memory Usage'
+    },
+    'gpu_utilization': {
+        'ar': 'استخدام كرت الشاشة',
+        'en': 'GPU Utilization'
+    },
+    'temperature': {
+        'ar': 'درجة الحرارة',
+        'en': 'Temperature'
+    },
+    'gpu_power': {
+        'ar': 'قوة كرت الشاشة',
+        'en': 'GPU Power'
+    },
+    'cuda_version': {
+        'ar': 'إصدار CUDA',
+        'en': 'CUDA Version'
+    },
+    'driver_version': {
+        'ar': 'إصدار التعريف',
+        'en': 'Driver Version'
+    },
+    'gpu_not_available': {
+        'ar': 'كرت الشاشة غير متاح',
+        'en': 'GPU Not Available'
+    },
+    'gpu_error': {
+        'ar': 'خطأ في كرت الشاشة',
+        'en': 'GPU Error'
+    },
+    'local_paths': {
+        'ar': 'المسارات المحلية',
+        'en': 'Local Paths'
+    },
+    'remote_storage': {
+        'ar': 'التخزين البعيد',
+        'en': 'Remote Storage'
+    },
+    'local_paths_info': {
+        'ar': 'المسارات المحلية',
+        'en': 'Local Paths Information'
+    },
+    'local_paths_description': {
+        'ar': 'قم بتكوين مسارات التخزين المحلية على الخادم',
+        'en': 'Configure local storage paths on the server'
+    },
+    'local_movies_mount': {
+        'ar': 'مجلد الأفلام المحلي',
+        'en': 'Local Movies Mount'
+    },
+    'local_movies_mount_description': {
+        'ar': 'مسار تحميل الأفلام على الخادم المحلي',
+        'en': 'Local server movies mount path'
+    },
+    'local_series_mount': {
+        'ar': 'مجلد المسلسلات المحلي',
+        'en': 'Local Series Mount'
+    },
+    'local_series_mount_description': {
+        'ar': 'مسار تحميل المسلسلات على الخادم المحلي',
+        'en': 'Local server series mount path'
+    },
+    'download_directory': {
+        'ar': 'مجلد التحميلات',
+        'en': 'Download Directory'
+    },
+    'download_directory_description': {
+        'ar': 'مجلد حفظ الملفات المحملة',
+        'en': 'Directory for downloaded files'
+    },
+    'working_directory': {
+        'ar': 'مجلد العمل',
+        'en': 'Working Directory'
+    },
+    'working_directory_description': {
+        'ar': 'مجلد العمل المؤقت للمعالجة',
+        'en': 'Temporary working directory for processing'
+    },
+    'remote_host': {
+        'ar': 'المضيف البعيد',
+        'en': 'Remote Host'
+    },
+    'remote_mount_type': {
+        'ar': 'نوع التحميل البعيد',
+        'en': 'Remote Mount Type'
+    },
+    'remote_movies_path': {
+        'ar': 'مسار الأفلام البعيد',
+        'en': 'Remote Movies Path'
+    },
+    'remote_movies_path_description': {
+        'ar': 'مسار الأفلام على الخادم البعيد',
+        'en': 'Movies path on remote server'
+    },
+    'remote_series_path': {
+        'ar': 'مسار المسلسلات البعيد',
+        'en': 'Remote Series Path'
+    },
+    'remote_series_path_description': {
+        'ar': 'مسار المسلسلات على الخادم البعيد',
+        'en': 'Series path on remote server'
+    },
+    'mount_options': {
+        'ar': 'خيارات التحميل',
+        'en': 'Mount Options'
+    },
+    'remote_username': {
+        'ar': 'اسم المستخدم البعيد',
+        'en': 'Remote Username'
+    },
+    'remote_username_description': {
+        'ar': 'اسم المستخدم للاتصال بالخادم البعيد',
+        'en': 'Username for remote server connection'
+    },
+    'remote_storage_testing': {
+        'ar': 'اختبار التخزين البعيد',
+        'en': 'Remote Storage Testing'
+    },
+    'test_connection': {
+        'ar': 'اختبار الاتصال',
+        'en': 'Test Connection'
+    },
+    'setup_mount': {
+        'ar': 'إعداد التحميل',
+        'en': 'Setup Mount'
+    },
+    'check_status': {
+        'ar': 'فحص الحالة',
+        'en': 'Check Status'
+    },
+    'save_settings': {
+        'ar': 'حفظ الإعدادات',
+        'en': 'Save Settings'
+    },
+    'gpu_status': {
+        'ar': 'حالة كروت الرسومات',
+        'en': 'GPU Status'
+    },
+    'gpu_available': {
+        'ar': 'كروت الرسومات المتاحة',
+        'en': 'GPUs Available'
+    },
+    'gpu_unavailable': {
+        'ar': 'كروت الرسومات غير متاحة',
+        'en': 'GPU Unavailable'
+    },
+    'gpu_not_supported': {
+        'ar': 'كروت الرسومات غير مدعومة',
+        'en': 'GPU Not Supported'
+    },
+    'gpu_usage': {
+        'ar': 'استخدام كارت الرسومات',
+        'en': 'GPU Usage'
+    },
+    'gpu_memory': {
+        'ar': 'ذاكرة كارت الرسومات',
+        'en': 'GPU Memory'
+    },
+    'gpu_temperature': {
+        'ar': 'درجة حرارة كارت الرسومات',
+        'en': 'GPU Temperature'
+    },
+    'storage_devices': {
+        'ar': 'أجهزة التخزين',
+        'en': 'Storage Devices'
+    },
+    'storage_device': {
+        'ar': 'جهاز تخزين',
+        'en': 'Storage Device'
+    },
+    'device_type': {
+        'ar': 'نوع الجهاز',
+        'en': 'Device Type'
+    },
+    'mount_point': {
+        'ar': 'نقطة التحميل',
+        'en': 'Mount Point'
+    },
+    'filesystem': {
+        'ar': 'نظام الملفات',
+        'en': 'Filesystem'
+    },
+    'used_space': {
+        'ar': 'المساحة المستخدمة',
+        'en': 'Used Space'
+    },
+    'free_space': {
+        'ar': 'المساحة المتاحة',
+        'en': 'Free Space'
+    },
+    'total_space': {
+        'ar': 'إجمالي المساحة',
+        'en': 'Total Space'
+    },
+    
+    # Dependencies Status translations
+    'dependencies_status': {
+        'ar': 'حالة البرامج المساعدة',
+        'en': 'Dependencies Status'
+    },
+    'dependencies_info': {
+        'ar': 'معلومات البرامج المساعدة',
+        'en': 'Dependencies Information'
+    },
+    'dependencies_description': {
+        'ar': 'عرض وإدارة جميع البرامج المساعدة المطلوبة للتطبيق',
+        'en': 'View and manage all required dependencies for the application'
+    },
+    'loading_dependencies': {
+        'ar': 'جاري تحميل حالة البرامج المساعدة...',
+        'en': 'Loading dependencies status...'
+    },
+    'dependencies_management': {
+        'ar': 'إدارة البرامج المساعدة',
+        'en': 'Dependencies Management'
+    },
+    'refresh_status': {
+        'ar': 'تحديث الحالة',
+        'en': 'Refresh Status'
+    },
+    'install_missing': {
+        'ar': 'تثبيت المفقود',
+        'en': 'Install Missing'
+    },
+    'update_all': {
+        'ar': 'تحديث الكل',
+        'en': 'Update All'
+    },
+    'package_status': {
+        'ar': 'حالة الحزمة',
+        'en': 'Package Status'
+    },
+    'installed': {
+        'ar': 'مثبت',
+        'en': 'Installed'
+    },
+    'not_installed': {
+        'ar': 'غير مثبت',
+        'en': 'Not Installed'
+    },
+    'update_available': {
+        'ar': 'تحديث متوفر',
+        'en': 'Update Available'
+    },
+    'install_package': {
+        'ar': 'تثبيت الحزمة',
+        'en': 'Install Package'
+    },
+    'update_package': {
+        'ar': 'تحديث الحزمة',
+        'en': 'Update Package'
+    },
+    'package_version': {
+        'ar': 'إصدار الحزمة',
+        'en': 'Package Version'
+    },
+    'required_version': {
+        'ar': 'الإصدار المطلوب',
+        'en': 'Required Version'
+    },
+    'category': {
+        'ar': 'الفئة',
+        'en': 'Category'
+    },
+    'ai_libraries': {
+        'ar': 'مكتبات الذكاء الاصطناعي',
+        'en': 'AI Libraries'
+    },
+    'system_utilities': {
+        'ar': 'أدوات النظام',
+        'en': 'System Utilities'
+    },
+    'web_framework': {
+        'ar': 'إطار الويب',
+        'en': 'Web Framework'
+    },
+    'gpu_drivers': {
+        'ar': 'تعريفات كروت الشاشة',
+        'en': 'GPU Drivers'
+    },
+    'ai_models_files': {
+        'ar': 'نماذج الذكاء الاصطناعي',
+        'en': 'AI Models Files'
+    },
+    'download_model': {
+        'ar': 'تحميل النموذج',
+        'en': 'Download Model'
+    },
+    'model_available': {
+        'ar': 'متوفر',
+        'en': 'Available'
+    },
+    'model_not_found': {
+        'ar': 'النموذج غير موجود',
+        'en': 'Model Not Found'
+    },
+    'install_gpu_drivers': {
+        'ar': 'تثبيت تعريفات كرت الشاشة',
+        'en': 'Install GPU Drivers'
+    },
+    'gpu_drivers_not_found': {
+        'ar': 'تعريفات كرت الشاشة غير مثبتة',
+        'en': 'GPU Drivers Not Installed'
+    },
+    # Version 2.2.5 Translations
+    'july_2025': {
+        'ar': 'يوليو 2025',
+        'en': 'July 2025'
+    },
+    'ai_dependencies_resolution': {
+        'ar': 'حل تعارضات مكتبات الذكاء الاصطناعي',
+        'en': 'AI Dependencies Resolution'
+    },
+    'complete_ai_conflicts_resolved': {
+        'ar': 'حل جميع تعارضات مكتبات الذكاء الاصطناعي بنجاح',
+        'en': 'Complete AI library conflicts successfully resolved'
+    },
+    'ai_integration_workaround': {
+        'ar': 'نظام تكامل الذكاء الاصطناعي البديل',
+        'en': 'AI Integration Workaround System'
+    },
+    'faster_whisper_ollama_pytorch_integration': {
+        'ar': 'تكامل faster-whisper و Ollama و PyTorch',
+        'en': 'Faster-Whisper, Ollama, and PyTorch integration'
+    },
+    'enhanced_system_status': {
+        'ar': 'تحسين حالة النظام',
+        'en': 'Enhanced System Status'
+    },
+    'accurate_ai_capabilities_detection': {
+        'ar': 'اكتشاف دقيق لقدرات الذكاء الاصطناعي',
+        'en': 'Accurate AI capabilities detection'
+    },
+    'translation_pipeline_integration': {
+        'ar': 'تكامل خط أنابيب الترجمة',
+        'en': 'Translation Pipeline Integration'
+    },
+    'seamless_ai_processing_fallback': {
+        'ar': 'نظام احتياطي سلس لمعالجة الذكاء الاصطناعي',
+        'en': 'Seamless AI processing fallback system'
+    },
+    'system_monitor_enhancement': {
+        'ar': 'تحسين مراقب النظام',
+        'en': 'System Monitor Enhancement'
+    },
+    'professional_hardware_monitoring': {
+        'ar': 'مراقبة احترافية للأجهزة',
+        'en': 'Professional hardware monitoring'
+    },
+    'settings_system_optimization': {
+        'ar': 'تحسين نظام الإعدادات',
+        'en': 'Settings System Optimization'
+    },
+    'advanced_tab_navigation_fixes': {
+        'ar': 'إصلاحات متقدمة لتنقل الألسنة',
+        'en': 'Advanced tab navigation fixes'
+    },
+    'dependencies_management': {
+        'ar': 'إدارة التبعيات',
+        'en': 'Dependencies Management'
+    },
+    'comprehensive_package_tracking': {
+        'ar': 'تتبع شامل للحزم',
+        'en': 'Comprehensive package tracking'
+    },
+    'ui_cleanup_optimization': {
+        'ar': 'تحسين وتنظيف واجهة المستخدم',
+        'en': 'UI Cleanup & Optimization'
+    },
+    'streamlined_navigation_interface': {
+        'ar': 'واجهة تنقل محسنة ومبسطة',
+        'en': 'Streamlined navigation interface'
     }
 }
 

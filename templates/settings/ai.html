@@ -699,31 +699,52 @@ async function benchmarkModels() {
 
 async function refreshGPUStatus() {
     try {
-        const response = await fetch('/api/gpu-refresh');
+        const response = await fetch('/api/gpu-refresh', {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
         const result = await response.json();
-        alert(result.message || 'GPU status refreshed');
+        alert(result.message || 'تم تحديث حالة كروت الشاشة بنجاح');
     } catch (error) {
-        alert('GPU refresh failed: ' + error.message);
+        console.error('GPU refresh error:', error);
+        alert('فشل في تحديث كروت الشاشة: ' + error.message);
     }
 }
 
 async function optimizeGPUAllocation() {
     try {
-        const response = await fetch('/api/gpu-optimize');
+        const response = await fetch('/api/gpu-optimize', {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
         const result = await response.json();
-        alert(result.message || 'GPU allocation optimized');
+        alert(result.message || 'تم تحسين توزيع كروت الشاشة بنجاح');
     } catch (error) {
-        alert('GPU optimization failed: ' + error.message);
+        console.error('GPU optimization error:', error);
+        alert('فشل في تحسين كروت الشاشة: ' + error.message);
     }
 }
 
 async function showGPUDiagnostics() {
     try {
-        const response = await fetch('/api/gpu-diagnostics');
+        const response = await fetch('/api/gpu-diagnostics', {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
         const result = await response.json();
-        alert(result.message || 'GPU diagnostics completed');
+        alert(result.message || 'تم إجراء فحص كروت الشاشة بنجاح');
     } catch (error) {
-        alert('GPU diagnostics failed: ' + error.message);
+        console.error('GPU diagnostics error:', error);
+        alert('فشل في فحص كروت الشاشة: ' + error.message);
     }
 }
 

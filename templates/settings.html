@@ -1159,12 +1159,9 @@ select option {
             media: {
                 name: currentLang === 'ar' ? "خوادم الوسائط" : "Media Servers",
                 subcategories: {
-                    'PLEX': currentLang === 'ar' ? 'خادم Plex' : 'Plex Server',
-                    'JELLYFIN': currentLang === 'ar' ? 'خادم Jellyfin' : 'Jellyfin Server',
-                    'EMBY': currentLang === 'ar' ? 'خادم Emby' : 'Emby Server',
-                    'KODI': currentLang === 'ar' ? 'مركز وسائط Kodi' : 'Kodi Media Center',
-                    'RADARR': currentLang === 'ar' ? 'مدير الأفلام Radarr' : 'Radarr Movies',
-                    'SONARR': currentLang === 'ar' ? 'مدير المسلسلات Sonarr' : 'Sonarr TV Shows'
+                    'streaming': currentLang === 'ar' ? 'خوادم البث' : 'Streaming Servers',
+                    'management': currentLang === 'ar' ? 'إدارة المحتوى' : 'Content Management', 
+                    'testing': currentLang === 'ar' ? 'اختبار الاتصال' : 'Connection Testing'
                 }
             },
             storage: {
@@ -1406,6 +1403,13 @@ select option {
         contents.forEach(content => {
             content.classList.add('hidden');
         });
+        
+        // Special handling for database admin tab
+        if (tabId === 'database') {
+            // Redirect to database admin page
+            window.location.href = '/database-admin';
+            return;
+        }
         
         // Show selected tab
         const targetTab = document.getElementById(`tab-${tabId}`);

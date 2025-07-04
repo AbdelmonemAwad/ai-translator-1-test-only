@@ -1,0 +1,38 @@
+{
+  "name": "AI Translator",
+  "version": "2.2.5",
+  "description": "Advanced multilingual AI-powered subtitle translation system",
+  "created": "2025-07-04T22:44:26.311010",
+  "deployment_target": "Ubuntu Server 20.04+",
+  "login_credentials": {
+    "username": "admin",
+    "password": "your_strong_password"
+  },
+  "database": {
+    "type": "PostgreSQL",
+    "name": "ai_translator",
+    "user": "ai_translator",
+    "password": "ai_translator_pass2024"
+  },
+  "installation": {
+    "method": "GitHub deployment",
+    "script": "install_remote_server.sh",
+    "requirements": "requirements_github.txt"
+  },
+  "features": [
+    "Complete Arabic subtitle translation system",
+    "Media server integrations (Plex, Jellyfin, Emby, Kodi, Radarr, Sonarr)",
+    "Advanced system monitoring and GPU management",
+    "Remote storage support (SFTP, FTP, SMB, NFS)",
+    "Responsive mobile-first design",
+    "One-line installation for Ubuntu Server"
+  ],
+  "fixes_included": [
+    "Fixed flask_sqlalchemy import errors on Ubuntu",
+    "Resolved GPU management API authentication issues",
+    "Fixed database schema consistency (path/file_path)",
+    "Enhanced PostgreSQL permissions and user management",
+    "Improved remote storage integration",
+    "Fixed JavaScript dropdown and translation functions"
+  ]
+}
