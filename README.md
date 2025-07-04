@@ -1,19 +1,13 @@
-# AI Translator - Advanced Multilingual Subtitle Translation System
+# AI Translator (الترجمان الآلي)
 
 <div align="center">
 
 ![AI Translator Logo](https://img.shields.io/badge/AI-Translator-2563eb?style=for-the-badge&logo=robot&logoColor=white)
-![Version](https://img.shields.io/badge/Version-2.2.5-green?style=for-the-badge)
+![Version](https://img.shields.io/badge/Version-2.2.2-green?style=for-the-badge)
 ![License](https://img.shields.io/badge/License-GPL%20v3-blue?style=for-the-badge)
 ![Platform](https://img.shields.io/badge/Platform-Ubuntu%20Server-orange?style=for-the-badge&logo=ubuntu)
 
 **Advanced AI-powered translation system for converting movies and TV shows to Arabic with exceptional accuracy and efficiency.**
-
-[![Quick Install](https://img.shields.io/badge/Quick%20Install-One%20Command-brightgreen?style=for-the-badge&logo=terminal&logoColor=white)](https://github.com/AbdelmonemAwad/ai-translator/blob/main/QUICK_INSTALL.md)
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/AbdelmonemAwad/ai-translator/main/install.sh | bash
-```
 
 [Features](#features) • [Installation](#installation) • [Documentation](#documentation) • [Support](#support)
 
@@ -23,348 +17,340 @@ curl -fsSL https://raw.githubusercontent.com/AbdelmonemAwad/ai-translator/main/i
 
 AI Translator is a comprehensive media translation system designed to automatically translate movies and TV shows from English to Arabic using cutting-edge AI technologies. The system provides a complete web interface for managing and monitoring all aspects of the translation process.
 
-## 🌟 Key Features
+### Key Highlights
+- 🤖 **AI-Powered**: Uses OpenAI Whisper for speech-to-text and Ollama (Llama 3) for translation
+- 🌐 **Web Interface**: Professional Arabic RTL-supported web dashboard
+- 📊 **Real-time Monitoring**: System resource monitoring and progress tracking
+- 🔄 **Automated Processing**: Batch translation with background task management
+- 📁 **Media Management**: Integration with Sonarr and Radarr for media library management
+- 🗄️ **Database-driven**: PostgreSQL backend with comprehensive logging
 
-### 🤖 AI-Powered Translation
-- **Advanced Speech Recognition**: Faster-Whisper integration for accurate audio-to-text conversion
-- **Intelligent Translation**: Ollama LLM with specialized Arabic translation models
-- **Subtitle Generation**: Automatic SRT file creation with proper Arabic text encoding
-- **Batch Processing**: Process multiple files simultaneously with queue management
+## ✨ Features
 
-### 🎬 Media Server Integration
-- **Plex Media Server**: Complete library synchronization with poster images
-- **Jellyfin**: API integration with metadata and poster retrieval
-- **Emby Media Server**: Full API support with user authentication
-- **Kodi Media Center**: JSON-RPC integration for home media centers
-- **Radarr**: Movie management with automatic metadata retrieval
-- **Sonarr**: TV series management with episode tracking
+### Core Translation Features
+- **Speech-to-Text**: OpenAI Whisper with configurable models (tiny to large)
+- **AI Translation**: Local Ollama LLM execution for secure Arabic translation
+- **Subtitle Generation**: Automated SRT file creation with proper Arabic encoding
+- **Batch Processing**: Queue-based translation with progress tracking
+- **Quality Control**: Error handling and correction tools
 
-### 🖥️ Professional Web Interface
-- **Modern Arabic RTL Design**: Beautiful dark theme with Arabic typography
-- **Responsive Layout**: Mobile-optimized interface with collapsible sidebar
-- **Real-time Monitoring**: Live progress tracking and system status updates
-- **Multi-language Support**: Complete Arabic/English translation system
-- **Advanced Settings**: Tabbed configuration interface with file browser
+### Web Interface
+- **Responsive Design**: Works on desktop, tablet, and mobile devices
+- **Arabic RTL Support**: Full right-to-left language support
+- **Dark/Light Themes**: User-configurable appearance
+- **Real-time Updates**: Live progress monitoring and notifications
+- **File Management**: Advanced file listing with search and filtering
 
-### 📊 System Monitoring & Management
-- **Hardware Detection**: Automatic CPU, GPU, memory, and storage monitoring
-- **Performance Tracking**: Real-time system resource usage with alerts
-- **Process Management**: Background task monitoring with detailed logging
-- **Database Administration**: Built-in PostgreSQL management tools
-- **Diagnostic Tools**: Comprehensive system health assessment
+### System Management
+- **Resource Monitoring**: CPU, RAM, GPU, and disk usage tracking
+- **Logging System**: Comprehensive application and translation logs
+- **User Authentication**: Secure session-based authentication
+- **Settings Management**: Web-based configuration interface
+- **Database Administration**: Built-in database management tools
 
-## 🚀 Quick Start
+### Integration Support
+- **Sonarr Integration**: TV series management and metadata
+- **Radarr Integration**: Movie management and metadata
+- **Casa OS Support**: Native integration with Casa OS platform
+- **API Endpoints**: RESTful APIs for external integration
 
-### Prerequisites
-- **Python 3.11+** (Python 3.9+ supported)
-- **PostgreSQL 14+** for data storage
-- **FFmpeg** for video/audio processing
-- **4GB+ RAM** recommended for AI processing
-- **Ubuntu 22.04+** or **Debian 11+** (recommended)
+## 🛠️ Technology Stack
 
-### Quick Installation (Recommended)
-
-**One-line installation for Ubuntu/Debian:**
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/AbdelmonemAwad/ai-translator/main/install.sh | bash
-```
-
-This command automatically:
-- Installs all system dependencies (Python, PostgreSQL, FFmpeg)
-- Clones the repository and sets up virtual environment
-- Configures database with secure credentials
-- Creates systemd service for automatic startup
-- Installs Ollama for AI translation
-
-### Manual Installation
-
-<details>
-<summary>Click to expand manual installation steps</summary>
-
-1. **Clone the Repository**
-```bash
-git clone https://github.com/AbdelmonemAwad/ai-translator.git
-cd ai-translator
-```
-
-2. **Install Dependencies**
-```bash
-# Install Python dependencies
-pip install -r requirements_github.txt
-
-# Install system dependencies (Ubuntu/Debian)
-sudo apt update
-sudo apt install ffmpeg postgresql postgresql-contrib python3-venv
-```
-
-3. **Configure Database**
-```bash
-# Create PostgreSQL database
-sudo -u postgres psql
-CREATE DATABASE ai_translator;
-CREATE USER ai_translator WITH PASSWORD 'ai_translator_pass2024';
-GRANT ALL PRIVILEGES ON DATABASE ai_translator TO ai_translator;
-\q
-```
-
-4. **Initialize Application**
-```bash
-# Set environment variables
-export DATABASE_URL="postgresql://ai_translator:ai_translator_pass2024@localhost/ai_translator"
-export SESSION_SECRET="your-secret-key-here"
-
-# Initialize database
-python database_setup.py
-
-# Start the application
-python main.py
-```
-
-</details>
-
-### Access Web Interface
-
-```
-Open browser to: http://localhost:5000
-Default credentials: admin / your_strong_password
-```
-
-## 🏗️ Architecture
-
-### Backend Components
-- **Flask Web Framework**: RESTful API with session-based authentication
-- **SQLAlchemy ORM**: Database management with PostgreSQL backend
-- **Background Processing**: Asynchronous task execution with psutil monitoring
-- **AI Integration**: Modular AI system with fallback capabilities
-
-### Frontend Design
-- **Jinja2 Templates**: Server-side rendering with Arabic RTL support
-- **Responsive CSS**: Mobile-first design with professional dark theme
-- **Vanilla JavaScript**: Dynamic interactions without heavy frameworks
-- **Real-time Updates**: WebSocket-like polling for live status updates
-
-### AI Pipeline
-1. **Audio Extraction**: FFmpeg extracts audio from video files
-2. **Speech Recognition**: Faster-Whisper converts speech to English text
-3. **Translation**: Ollama LLM translates English to Arabic
-4. **Subtitle Generation**: Creates properly formatted SRT files
+| Component | Technology | Purpose |
+|-----------|------------|---------|
+| **Backend** | Python 3.11 + Flask | Web application framework |
+| **Database** | PostgreSQL | Data storage and management |
+| **AI/ML** | OpenAI Whisper + Ollama | Speech recognition and translation |
+| **Media Processing** | FFmpeg | Audio/video processing |
+| **Frontend** | HTML5 + CSS3 + JavaScript | User interface |
+| **Web Server** | Nginx + Gunicorn | Production deployment |
+| **Styling** | Custom CSS with Tajawal font | Arabic typography |
 
 ## 📋 System Requirements
 
 ### Minimum Requirements
-- **CPU**: 2+ cores, 2.0 GHz
-- **RAM**: 4GB (8GB recommended for AI processing)
-- **Storage**: 10GB free space
-- **Network**: Internet connection for media server APIs
+- **OS**: Ubuntu Server 22.04 LTS or higher
+- **RAM**: 4GB (8GB recommended)
+- **Storage**: 20GB free space (50GB+ recommended for models)
+- **CPU**: 2 cores (4+ cores recommended)
+- **GPU**: NVIDIA Graphics Card (required for AI processing)
+- **Network**: Internet connection for initial setup
 
-### Recommended Setup
-- **CPU**: 4+ cores, 3.0 GHz
-- **RAM**: 16GB+ for optimal AI performance
-- **GPU**: NVIDIA GPU with 6GB+ VRAM (optional but recommended)
-- **Storage**: SSD with 50GB+ free space
+### Recommended Requirements
+- **RAM**: 16GB for optimal performance
+- **Storage**: SSD with 100GB+ free space
+- **CPU**: 8+ cores for faster processing
+- **GPU**: NVIDIA RTX series or better with 8GB+ VRAM
 
-### Supported Platforms
-- **Ubuntu Server 22.04+** (Primary)
-- **Debian 11+** (Tested)
-- **CentOS 8+** (Community support)
-- **Docker** (Container deployment available)
+## 🚀 Quick Installation
+
+### One-Command Installation
+
+```bash
+# Download and run the automated installer
+wget https://raw.githubusercontent.com/username/ai-translator/main/install.sh
+chmod +x install.sh
+sudo ./install.sh
+```
+
+### Manual Installation Steps
+
+1. **Clone Repository**
+   ```bash
+   git clone https://github.com/AbdelmonemAwad/ai-translator.git
+   cd ai-translator
+   ```
+
+2. **Run Installation Script**
+   ```bash
+   sudo ./install.sh
+   ```
+
+3. **Access Application**
+   ```
+   URL: http://your-server-ip
+   Default Login: admin / admin123
+   ```
+
+### What the Installer Does
+- ✅ Installs Python 3.11 and dependencies
+- ✅ Sets up PostgreSQL database
+- ✅ Installs and configures Ollama with Llama 3
+- ✅ Downloads OpenAI Whisper models
+- ✅ Configures Nginx reverse proxy
+- ✅ Sets up systemd services
+- ✅ Configures firewall rules
+- ✅ Creates default admin user
+
+## 📖 Documentation
+
+For comprehensive documentation, visit the built-in documentation page:
+- **Web Documentation**: `http://your-server-ip/docs`
+- **API Documentation**: Available in the web interface
+- **Configuration Guide**: Settings page in the application
+
+### Quick Start Guide
+
+1. **Login**: Use default credentials `admin / admin123`
+2. **Configure Settings**: Set up Sonarr/Radarr API endpoints
+3. **Sync Library**: Import your media files
+4. **Start Translation**: Select files and begin batch processing
+5. **Monitor Progress**: Track translation status in real-time
 
 ## 🔧 Configuration
 
-### Media Server Setup
-Configure your media servers in the Settings panel:
+### Main Configuration Options
+- **AI Models**: Whisper (speech-to-text) and Ollama/Llama 3 (translation)
+- **Media Services**: Plex, Jellyfin, Emby, Kodi, Radarr, Sonarr integration
+- **GPU Management**: Automatic NVIDIA GPU detection and allocation
+- **Video Formats**: Support for 16+ video formats (MP4, MKV, AVI, etc.)
+- **Remote Storage**: SFTP, FTP, SMB/CIFS, NFS mount support
+- **Mobile Interface**: Responsive design with collapsible sidebar
 
-```python
-# Radarr Configuration
-RADARR_URL = "http://localhost:7878"
-RADARR_API_KEY = "your_api_key_here"
-
-# Sonarr Configuration  
-SONARR_URL = "http://localhost:8989"
-SONARR_API_KEY = "your_api_key_here"
-```
-
-### AI Model Configuration
-```python
-# Whisper Models (choose based on accuracy vs speed)
-WHISPER_MODEL = "medium.en"  # Options: tiny, base, small, medium, large
-
-# Ollama Models (for translation)
-OLLAMA_MODEL = "llama3"      # Options: llama3, mistral, qwen
-```
-
-### Path Mapping
-```python
-# Map remote storage to local mount points
-REMOTE_MOVIES_PATH = "/volume1/movies"
-LOCAL_MOVIES_MOUNT = "/mnt/movies"
-```
-
-## 🎯 Usage Examples
-
-### Translate Single File
-```python
-from process_video import main as process_video
-
-# Process a single video file
-result = process_video("/path/to/movie.mp4")
-print(f"Translation status: {result['status']}")
-```
-
-### Batch Translation
-```python
-# Use the web interface for batch operations:
-# 1. Navigate to File Management
-# 2. Select multiple files
-# 3. Click "Start Batch Translation"
-```
-
-### API Usage
+### Environment Variables
 ```bash
-# Get system status
-curl http://localhost:5000/api/status
-
-# Get file list
-curl http://localhost:5000/api/files
-
-# Start translation
-curl -X POST http://localhost:5000/action/start-batch
+DATABASE_URL=postgresql://user:pass@localhost:5432/ai_translator_db
+SESSION_SECRET=your-secret-key
+FLASK_ENV=production
 ```
 
-## 📁 Project Structure
+## 🐳 Casa OS Integration
 
-```
-ai-translator/
-├── app.py                    # Main Flask application
-├── main.py                   # Application entry point
-├── models.py                 # Database models
-├── database_setup.py         # Database initialization
-├── background_tasks.py       # Async task processing
-├── process_video.py          # Video processing pipeline
-├── ai_integration_workaround.py  # AI system integration
-├── auth_manager.py           # Authentication system
-├── gpu_manager.py            # GPU detection and management
-├── system_monitor.py         # System monitoring tools
-├── translations.py           # Multilingual support
-├── templates/                # HTML templates
-│   ├── layout.html          # Base template
-│   ├── dashboard.html       # Main dashboard
-│   ├── settings.html        # Configuration interface
-│   └── ...
-├── static/                   # CSS, JS, and assets
-│   ├── css/style.css        # Main stylesheet
-│   ├── js/                  # JavaScript files
-│   └── images/              # Image assets
-├── services/                 # External service integrations
-│   ├── media_services.py    # Media server APIs
-│   └── remote_storage.py    # Remote storage management
-└── requirements.txt          # Python dependencies
+AI Translator includes native Casa OS support:
+
+```json
+{
+    "name": "AI Translator",
+    "icon": "🤖",
+    "description": "Advanced AI-powered translation system",
+    "url": "http://localhost:80",
+    "category": "Media",
+    "tags": ["ai", "translation", "media", "subtitles"]
+}
 ```
 
-## 🔒 Security Features
+## 📊 Service Management
 
-- **Session-based Authentication**: Secure user authentication without external dependencies
-- **CSRF Protection**: Built-in cross-site request forgery protection
-- **Path Validation**: Prevents directory traversal attacks
-- **SQL Injection Prevention**: Parameterized queries with SQLAlchemy
-- **Input Sanitization**: All user inputs are validated and sanitized
+### SystemD Commands
+```bash
+# Check status
+sudo systemctl status ai-translator
 
-## 🌐 Supported Video Formats
+# Start/Stop/Restart
+sudo systemctl start ai-translator
+sudo systemctl stop ai-translator
+sudo systemctl restart ai-translator
 
-The system supports 16 video formats:
-- **MP4, MKV, AVI** (Most common)
-- **MOV, WMV, FLV** (Standard formats)  
-- **M4V, WEBM, OGV** (Web formats)
-- **TS, M2TS, VOB** (Broadcast formats)
-- **ASF, RM, RMVB** (Legacy formats)
-- **3GP** (Mobile format)
+# View logs
+sudo journalctl -u ai-translator -f
+```
 
-## 📊 Performance Benchmarks
+### Application Commands
+```bash
+# View application logs
+tail -f /opt/ai-translator/app.log
 
-### Translation Speed (approximate)
-- **1-hour movie**: 15-30 minutes processing time
-- **TV episode (45 min)**: 10-20 minutes processing time
-- **Batch processing**: 3-5 files simultaneously
+# Check database status
+sudo -u postgres psql -d ai_translator_db -c "\dt"
 
-### System Requirements by Workload
-- **Light usage**: 2GB RAM, 2 CPU cores
-- **Medium usage**: 8GB RAM, 4 CPU cores
-- **Heavy usage**: 16GB RAM, 8 CPU cores, GPU acceleration
+# Test Ollama connection
+curl http://localhost:11434/api/tags
+```
 
-## 🛠️ Development
+## 🔍 Troubleshooting
 
-### Setting Up Development Environment
+### Common Issues
+
+**Service Won't Start**
+```bash
+# Check logs for errors
+sudo journalctl -u ai-translator -n 50
+
+# Verify database connection
+sudo systemctl status postgresql
+```
+
+**Web Interface Not Accessible**
+```bash
+# Check Nginx status
+sudo systemctl status nginx
+
+# Verify firewall settings
+sudo ufw status
+```
+
+**Translation Errors**
+- Ensure Ollama is running: `sudo systemctl status ollama`
+- Check Whisper model availability
+- Verify FFmpeg installation: `ffmpeg -version`
+
+### Getting Help
+- Check the built-in logs page for detailed error information
+- Review system monitor for resource usage
+- Consult the documentation page at `/docs`
+
+## 🤝 Contributing
+
+We welcome contributions! Please see our contributing guidelines:
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Submit a pull request
+
+### Development Setup
 ```bash
 # Clone repository
 git clone https://github.com/AbdelmonemAwad/ai-translator.git
 cd ai-translator
 
 # Create virtual environment
-python -m venv venv
-source venv/bin/activate  # Linux/Mac
-# venv\Scripts\activate   # Windows
+python3.11 -m venv venv
+source venv/bin/activate
 
-# Install development dependencies
+# Install dependencies
 pip install -r requirements.txt
-pip install -r requirements-dev.txt
 
 # Run in development mode
-export FLASK_ENV=development
 python main.py
 ```
 
-### Contributing
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+## 📄 License
 
-### Testing
-```bash
-# Run unit tests
-python -m pytest tests/
+This project is licensed under the **GNU General Public License v3.0** - see the [LICENSE](LICENSE) file for details.
 
-# Run integration tests
-python -m pytest tests/integration/
+### Open Source Commitment
+This software is **copyleft** protected, ensuring that:
+- ✅ Source code remains forever open and free
+- ✅ All modifications must be shared with the community  
+- ✅ Commercial use is allowed but derivatives stay open source
+- ✅ Cannot be incorporated into proprietary software
 
-# Check code coverage
-python -m pytest --cov=app tests/
-```
+### Third-Party Licenses (GPL Compatible)
+- OpenAI Whisper: Apache License 2.0
+- Ollama: MIT License
+- FFmpeg: LGPL/GPL
+- PostgreSQL: PostgreSQL License
 
-## 📝 License
+## 🆔 Version History & Changelog
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+### v2.2.0 (June 29, 2025) - Development Tools Centralization & Interface Optimization
+**🎯 Major Features:**
+- **Centralized Development Tools Interface**: Created comprehensive "Development Tools" category in Settings with unified sample data management
+- **Enhanced Sample Data Management**: Complete development workflow with warning systems, bulk operations, and status feedback
+- **Template Error Resolution**: Fixed critical "too many values to unpack" error in settings page option parsing
+- **Database Integration**: Added development settings (debug_mode, log_level, testing_features) with multilingual support
+- **UI/UX Improvements**: Streamlined interface by consolidating testing functionality from scattered pages into single location
+- **Performance Optimization**: Enhanced JavaScript error handling and improved page loading speed
 
-## 🤝 Support
+### v2.1.0 (June 29, 2025) - Complete Media Services Integration
+**🎯 Major Features:**
+- **Universal Media Services**: Full integration with Plex, Jellyfin, Emby, Kodi, Radarr, and Sonarr
+- **Advanced GPU Management**: Automatic NVIDIA GPU detection with intelligent allocation
+- **Comprehensive Video Format Support**: 16+ video formats including MP4, MKV, AVI, MOV, WMV, WebM
+- **Perfect Mobile Interface**: Fully functional hamburger menu with responsive sidebar
+- **Enhanced Remote Storage**: Multiple mount point support with SFTP, FTP, SMB/CIFS, NFS
+- **Modular Architecture**: Component-based UI system for better maintainability
 
-- **Documentation**: [GitHub Wiki](https://github.com/AbdelmonemAwad/ai-translator/wiki)
-- **Issues**: [GitHub Issues](https://github.com/AbdelmonemAwad/ai-translator/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/AbdelmonemAwad/ai-translator/discussions)
+**🔧 Technical Improvements:**
+- PostgreSQL database with enhanced schema for media services
+- Services package with base classes and specialized implementations
+- Improved error handling and connection management
+- Advanced GPU performance scoring and service recommendations
+- Complete translation status management system
 
-## 🚀 Roadmap
+**🌐 User Experience:**
+- Professional dark theme with Arabic RTL support
+- Interactive file browser with folder navigation
+- Real-time system monitoring and translation progress
+- Advanced notification system with multilingual support
+- Grid layout controls for file management
 
-### Version 2.3.0 (Q3 2025)
-- [ ] Docker containerization
-- [ ] Advanced GPU management
-- [ ] Subtitle synchronization tools
-- [ ] Multi-language output support
+### v2.0.0 (June 28, 2025) - Translation System Unification
+**🎯 Major Features:**
+- Complete translation status detection and management
+- Enhanced UI with professional scan functionality
+- Advanced API architecture with proper authentication
+- Comprehensive file management with intelligent filtering
 
-### Version 2.4.0 (Q4 2025)
-- [ ] Cloud storage integration (AWS S3, Google Cloud)
-- [ ] Real-time translation preview
-- [ ] Advanced subtitle editing tools
-- [ ] Performance optimization
+**🔧 Technical Improvements:**
+- Background task system for bulk operations
+- Real-time database updates during translation
+- Flash message integration with session management
+- Enhanced error handling and logging
 
-## 🏆 Acknowledgments
+### v1.0.0 (June 2025) - Initial Release
+**🎯 Core Features:**
+- OpenAI Whisper integration for speech-to-text
+- Ollama/Llama 3 integration for Arabic translation
+- Basic Radarr and Sonarr integration
+- Web-based management interface
+- SQLite database with basic schema
+- Background processing system
 
-- **OpenAI Whisper** for speech recognition technology
-- **Ollama** for local LLM inference
-- **FFmpeg** for multimedia processing
-- **Flask** and **SQLAlchemy** for web framework
-- **Bootstrap** and **Feather Icons** for UI components
+## 👨‍💻 Author
+
+**عبدالمنعم عوض (AbdelmonemAwad)**
+- Email: Eg2@live.com
+- GitHub: [@AbdelmonemAwad](https://github.com/AbdelmonemAwad)
+- Facebook: [عبدالمنعم عوض](https://www.facebook.com/abdelmonemawad/)
+- Instagram: [@abdelmonemawad](https://www.instagram.com/abdelmonemawad/)
+- Specialized in AI-powered media processing systems
+- Expert in Arabic language processing and NLP
+
+## 🙏 Acknowledgments
+
+- OpenAI for Whisper speech recognition
+- Ollama team for local LLM execution
+- FFmpeg project for media processing
+- Casa OS community for platform integration
 
 ---
 
-**AI Translator v2.2.5** - Built with ❤️ for the Arabic-speaking community
+<div align="center">
+
+**Built with ❤️ for the Arabic-speaking community**
+
+[Website](http://your-server-ip) • [Documentation](/docs) • [Issues](https://github.com/AbdelmonemAwad/ai-translator/issues)
+
+</div>

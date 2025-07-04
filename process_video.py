@@ -17,21 +17,10 @@ def log_message(message):
     
     try:
         process_log = os.path.join(os.path.dirname(__file__), "process.log")
-        with open(process_log, "a", encoding="utf-8") as f:
-            f.write(log_line + "\n")
+        with open(process_log, 'a', encoding='utf-8') as f:
+            f.write(log_line + '\n')
     except Exception as e:
-        print(f"Error writing to log file: {e}")
-
-# استيراد النظام الجديد للذكاء الاصطناعي
-try:
-    from ai_integration_workaround import process_video as ai_process_video
-    from ai_integration_workaround import get_ai_status
-    AI_INTEGRATION_AVAILABLE = True
-    log_message("✓ AI Integration system loaded successfully")
-except ImportError as e:
-    AI_INTEGRATION_AVAILABLE = False
-    log_message(f"⚠ AI Integration system not available: {e}")
-    log_message("Falling back to original implementation")
+        print(f"Warning: Could not write to log file: {e}")
 
 def get_settings():
     """Get settings from PostgreSQL database using Flask app context"""

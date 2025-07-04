@@ -1,189 +1,164 @@
 #!/bin/bash
-# AI Translator v2.2.5 - Fixed Installation Script
-# المترجم الآلي v2.2.5 - سكريبت التثبيت المحسن
+# AI Translator Fixed Installation Script - إصلاح مشكلة Python
+# Support: Ubuntu Server 22.04+ with Python auto-detection
 
 set -e
 
-echo "🚀 AI Translator v2.2.5 - Fixed Installation Starting..."
-echo "   المترجم الآلي v2.2.5 - بدء التثبيت المحسن..."
-
-# Colors for output
+# Colors
 RED='\033[0;31m'
 GREEN='\033[0;32m'
-BLUE='\033[0;34m'
 YELLOW='\033[1;33m'
-NC='\033[0m' # No Color
+BLUE='\033[0;34m'
+NC='\033[0m'
 
-# Function to print colored output
-print_status() {
-    echo -e "${GREEN}✓${NC} $1"
+log() { echo -e "${GREEN}[INFO]${NC} $1"; }
+warn() { echo -e "${YELLOW}[WARN]${NC} $1"; }
+error() { echo -e "${RED}[ERROR]${NC} $1"; exit 1; }
+
+print_header() {
+    echo -e "${BLUE}"
+    echo "=================================================================="
+    echo "          AI Translator Fixed Installation"
+    echo "          تثبيت المترجم الآلي مع إصلاح Python"
+    echo "=================================================================="
+    echo -e "${NC}"
 }
 
-print_info() {
-    echo -e "${BLUE}ℹ${NC} $1"
+detect_python() {
+    log "Detecting available Python version..."
+    
+    if command -v python3.11 >/dev/null 2>&1; then
+        PYTHON_VERSION="3.11"
+    elif command -v python3.10 >/dev/null 2>&1; then
+        PYTHON_VERSION="3.10"
+    elif command -v python3.9 >/dev/null 2>&1; then
+        PYTHON_VERSION="3.9"
+    else
+        PYTHON_VERSION="3"  # Generic python3
+    fi
+    
+    log "Using Python $PYTHON_VERSION"
+    export PYTHON_VERSION
 }
 
-print_warning() {
-    echo -e "${YELLOW}⚠${NC} $1"
+install_python_packages() {
+    log "Installing Python and dependencies..."
+    
+    # Update package list
+    apt update
+    
+    # Install basic Python (available on all Ubuntu versions)
+    apt install -y python3 python3-dev python3-venv python3-pip
+    
+    # Try to install specific version if available
+    if [[ "$PYTHON_VERSION" != "3" ]]; then
+        apt install -y python${PYTHON_VERSION}-dev python${PYTHON_VERSION}-venv 2>/dev/null || {
+            warn "Specific Python $PYTHON_VERSION packages not available, using default python3"
+        }
+    fi
+    
+    log "Python packages installed ✓"
 }
 
-print_error() {
-    echo -e "${RED}✗${NC} $1"
+install_system_dependencies() {
+    log "Installing system dependencies..."
+    
+    apt install -y \
+        curl wget git build-essential \
+        software-properties-common \
+        apt-transport-https ca-certificates \
+        postgresql postgresql-contrib \
+        nginx ufw htop unzip \
+        ffmpeg mediainfo \
+        libpq-dev libffi-dev libssl-dev \
+        pkg-config sqlite3 libsqlite3-dev \
+        python3-numpy python3-requests \
+        python3-flask python3-sqlalchemy
+    
+    log "System dependencies installed ✓"
 }
 
-# Check if running as root
-if [[ $EUID -eq 0 ]]; then
-    print_warning "Running as root. Consider creating a dedicated user for the application."
-fi
+install_python_ai_packages() {
+    log "Installing AI packages with virtual environment..."
+    
+    # Create virtual environment
+    VENV_DIR="/opt/ai-translator-venv"
+    python3 -m venv "$VENV_DIR"
+    
+    # Upgrade pip in virtual environment
+    "$VENV_DIR/bin/python" -m pip install --upgrade pip
+    
+    # Install AI Translator requirements in virtual environment
+    "$VENV_DIR/bin/pip" install \
+        flask flask-sqlalchemy gunicorn \
+        psutil psycopg2-binary requests \
+        werkzeug email-validator \
+        openai-whisper torch torchaudio
+    
+    # Set permissions
+    chown -R ai-translator:ai-translator "$VENV_DIR"
+    
+    log "AI packages installed in virtual environment ✓"
+}
 
-# Update system packages
-print_info "Updating system packages..."
-sudo apt update
+setup_database() {
+    log "Setting up PostgreSQL database..."
+    
+    systemctl start postgresql
+    systemctl enable postgresql
+    
+    # Create database and user
+    sudo -u postgres createdb ai_translator 2>/dev/null || warn "Database already exists"
+    sudo -u postgres createuser ai_translator 2>/dev/null || warn "User already exists"
+    sudo -u postgres psql -c "ALTER USER ai_translator WITH PASSWORD 'ai_translator_pass2024';"
+    sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE ai_translator TO ai_translator;"
+    
+    log "Database setup completed ✓"
+}
 
-# Install system dependencies
-print_info "Installing system dependencies..."
-sudo apt install -y \
-    python3 \
-    python3-pip \
-    python3-venv \
-    python3-dev \
-    postgresql \
-    postgresql-contrib \
-    ffmpeg \
-    git \
-    curl \
-    build-essential \
-    pkg-config \
-    libpq-dev \
-    nginx
-
-# Clone repository
-print_info "Cloning AI Translator repository..."
-if [ -d "ai-translator" ]; then
-    print_warning "Directory ai-translator already exists. Removing..."
-    rm -rf ai-translator
-fi
-
-git clone https://github.com/AbdelmonemAwad/ai-translator.git
-cd ai-translator
-
-# Create virtual environment
-print_info "Creating Python virtual environment..."
-python3 -m venv venv
-source venv/bin/activate
-
-# Install Python dependencies - FIX: Install Flask-SQLAlchemy explicitly
-print_info "Installing Python dependencies..."
-pip install --upgrade pip
-
-# Install core dependencies first
-pip install \
-    Flask>=3.0.0 \
-    Flask-SQLAlchemy>=3.1.1 \
-    Gunicorn>=21.2.0 \
-    Werkzeug>=3.0.1 \
-    SQLAlchemy>=2.0.23 \
-    psycopg2-binary>=2.9.9 \
-    psutil>=5.9.6 \
-    pynvml>=11.5.0 \
-    requests>=2.31.0 \
-    python-dotenv>=1.0.0
-
-# Install additional dependencies
-pip install \
-    opencv-python>=4.8.1.78 \
-    Pillow>=10.1.0 \
-    "numpy>=1.26.4,<2.0.0" \
-    torch>=2.0.1 \
-    faster-whisper>=1.0.1 \
-    torchaudio>=2.0.2 \
-    torchvision>=0.15.2 \
-    paramiko>=3.3.1 \
-    boto3>=1.34.4 \
-    setuptools>=69.0.2
-
-# Try to install from requirements if it exists
-if [ -f "requirements_github.txt" ]; then
-    print_info "Installing additional requirements from requirements_github.txt..."
-    pip install -r requirements_github.txt || print_warning "Some optional dependencies may not have installed"
-fi
-
-# Setup PostgreSQL database
-print_info "Setting up PostgreSQL database..."
-sudo -u postgres psql -c "DROP DATABASE IF EXISTS ai_translator;" 2>/dev/null || true
-sudo -u postgres psql -c "DROP USER IF EXISTS ai_translator;" 2>/dev/null || true
-sudo -u postgres psql -c "CREATE DATABASE ai_translator;"
-sudo -u postgres psql -c "CREATE USER ai_translator WITH PASSWORD 'ai_translator_pass2024';"
-sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE ai_translator TO ai_translator;"
-
-# Set environment variables
-print_info "Setting up environment variables..."
-cat > .env << EOF
-DATABASE_URL=postgresql://ai_translator:ai_translator_pass2024@localhost/ai_translator
-SESSION_SECRET=$(python3 -c 'import secrets; print(secrets.token_hex(32))')
-FLASK_ENV=production
-EOF
-
-# Initialize database
-print_info "Initializing database schema..."
-export DATABASE_URL="postgresql://ai_translator:ai_translator_pass2024@localhost/ai_translator"
-export SESSION_SECRET=$(python3 -c 'import secrets; print(secrets.token_hex(32))')
-
-# Test imports before database setup
-print_info "Testing Python imports..."
-python3 -c "
-import sys
-try:
-    from flask_sqlalchemy import SQLAlchemy
-    print('✓ Flask-SQLAlchemy imported successfully')
-    import flask
-    print('✓ Flask imported successfully')
-    import sqlalchemy
-    print('✓ SQLAlchemy imported successfully')
-    import psycopg2
-    print('✓ psycopg2 imported successfully')
-except ImportError as e:
-    print(f'✗ Import error: {e}')
-    sys.exit(1)
-"
-
-# Initialize database if imports successful
-if [ -f "database_setup.py" ]; then
-    python database_setup.py
-else
-    print_warning "database_setup.py not found. Database initialization skipped."
-fi
-
-# Create systemd service
-print_info "Creating systemd service..."
-sudo tee /etc/systemd/system/ai-translator.service > /dev/null << EOF
+create_service() {
+    log "Creating systemd service..."
+    
+    # Create service user
+    useradd -r -s /bin/false ai-translator 2>/dev/null || warn "User already exists"
+    
+    # Set permissions
+    chown -R ai-translator:ai-translator /opt/ai-translator
+    chmod +x /opt/ai-translator/app.py
+    
+    # Create systemd service with virtual environment
+    cat > /etc/systemd/system/ai-translator.service << EOF
 [Unit]
-Description=AI Translator v2.2.5 Service
+Description=AI Translator Service
 After=network.target postgresql.service
-Requires=postgresql.service
 
 [Service]
-Type=simple
-User=root
-WorkingDirectory=/root/ai-translator
-ExecStart=/root/ai-translator/venv/bin/python -m gunicorn --bind 0.0.0.0:5000 --workers 2 --timeout 300 main:app
-Environment=DATABASE_URL=postgresql://ai_translator:ai_translator_pass2024@localhost/ai_translator
-Environment=SESSION_SECRET=$(python3 -c 'import secrets; print(secrets.token_hex(32))')
-Environment=FLASK_ENV=production
+Type=exec
+User=ai-translator
+Group=ai-translator
+WorkingDirectory=/opt/ai-translator
+ExecStart=/opt/ai-translator-venv/bin/gunicorn --bind 0.0.0.0:5000 --workers 2 app:app
 Restart=always
-RestartSec=10
+RestartSec=3
+Environment=DATABASE_URL=postgresql://ai_translator:ai_translator_pass2024@localhost/ai_translator
 
 [Install]
 WantedBy=multi-user.target
 EOF
 
-# Configure Nginx
-print_info "Configuring Nginx..."
-sudo tee /etc/nginx/sites-available/ai-translator > /dev/null << EOF
+    systemctl daemon-reload
+    systemctl enable ai-translator
+    
+    log "Service created ✓"
+}
+
+configure_nginx() {
+    log "Configuring Nginx..."
+    
+    cat > /etc/nginx/sites-available/ai-translator << EOF
 server {
     listen 80;
     server_name _;
-    client_max_body_size 100M;
     
     location / {
         proxy_pass http://127.0.0.1:5000;
@@ -191,48 +166,51 @@ server {
         proxy_set_header X-Real-IP \$remote_addr;
         proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto \$scheme;
-        proxy_connect_timeout 300;
-        proxy_send_timeout 300;
-        proxy_read_timeout 300;
     }
 }
 EOF
 
-# Enable Nginx site
-sudo ln -sf /etc/nginx/sites-available/ai-translator /etc/nginx/sites-enabled/
-sudo rm -f /etc/nginx/sites-enabled/default
+    ln -sf /etc/nginx/sites-available/ai-translator /etc/nginx/sites-enabled/
+    rm -f /etc/nginx/sites-enabled/default
+    
+    nginx -t && systemctl restart nginx
+    
+    log "Nginx configured ✓"
+}
 
-# Test Nginx configuration
-sudo nginx -t
+main() {
+    print_header
+    
+    # Check if running as root
+    [[ $EUID -eq 0 ]] || error "Run as root: sudo $0"
+    
+    detect_python
+    install_python_packages
+    install_system_dependencies
+    
+    # Copy files to /opt/ai-translator (assumes we're in the ai-translator directory)
+    log "Installing application files..."
+    mkdir -p /opt/ai-translator
+    cp -r . /opt/ai-translator/
+    
+    install_python_ai_packages
+    setup_database
+    create_service
+    configure_nginx
+    
+    # Start services
+    log "Starting services..."
+    systemctl start ai-translator
+    systemctl start nginx
+    
+    echo -e "${GREEN}"
+    echo "=================================================================="
+    echo "          AI Translator Installation Complete!"
+    echo "=================================================================="
+    echo "Access your application at: http://$(hostname -I | awk '{print $1}')"
+    echo "Default credentials: admin / your_strong_password"
+    echo "=================================================================="
+    echo -e "${NC}"
+}
 
-# Enable and start services
-print_info "Enabling and starting services..."
-sudo systemctl daemon-reload
-sudo systemctl enable ai-translator
-sudo systemctl enable nginx
-sudo systemctl restart nginx
-
-# Start AI Translator service
-print_info "Starting AI Translator service..."
-sudo systemctl start ai-translator
-
-# Check service status
-sleep 5
-if sudo systemctl is-active --quiet ai-translator; then
-    print_status "AI Translator service is running successfully!"
-else
-    print_error "AI Translator service failed to start. Checking logs..."
-    sudo journalctl -u ai-translator --no-pager -n 20
-fi
-
-# Display installation summary
-print_status "Installation completed!"
-print_info "Service status: $(sudo systemctl is-active ai-translator)"
-print_info "Access your application at: http://$(hostname -I | awk '{print $1}')"
-print_info "Default credentials: admin / your_strong_password"
-print_info "Database: ai_translator"
-print_info "Service logs: sudo journalctl -u ai-translator -f"
-
-echo ""
-echo "🎉 AI Translator v2.2.5 Installation Complete!"
-echo "   المترجم الآلي v2.2.5 - اكتمل التثبيت!"
+main "$@"

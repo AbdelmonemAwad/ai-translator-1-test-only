@@ -104,7 +104,7 @@ except ImportError as e:
         </head>
         <body>
             <div class="login-container">
-                <h1>🤖 المترجم الآلي v2.2.2</h1>
+                <h1>🤖 المترجم الآلي v2.2.1</h1>
                 
                 {% with messages = get_flashed_messages(with_categories=true) %}
                     {% if messages %}
@@ -180,7 +180,7 @@ except ImportError as e:
         </head>
         <body>
             <div class="header">
-                <h1>🤖 المترجم الآلي v2.2.2 - Ubuntu Server</h1>
+                <h1>🤖 المترجم الآلي v2.2.1 - Ubuntu Server</h1>
                 <div class="nav-links">
                     <a href="/dashboard">الرئيسية</a>
                     <a href="/logout">خروج</a>
@@ -233,7 +233,7 @@ except ImportError as e:
     def api_status():
         return jsonify({
             'status': 'operational',
-            'version': '2.2.2',
+            'version': '2.2.1',
             'mode': 'ubuntu_compatible',
             'timestamp': datetime.datetime.now().isoformat(),
             'authenticated': bool(session.get('authenticated'))
@@ -241,5 +241,5 @@ except ImportError as e:
 
 # The app variable is now available for gunicorn
 if __name__ == "__main__":
-    print("Starting AI Translator v2.2.2 for Ubuntu Server...")
+    print("Starting AI Translator v2.2.1 for Ubuntu Server...")
     app.run(host="0.0.0.0", port=5000, debug=False)

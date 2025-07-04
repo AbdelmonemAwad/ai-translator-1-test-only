@@ -50,7 +50,12 @@
                 <span>{{ t('blacklist') }}</span>
             </a>
         </div>
-
+        <div class="nav-item">
+            <a href="{{ url_for('system_monitor_page') }}" class="nav-link {{ 'active' if request.endpoint == 'system_monitor_page' else '' }}">
+                <i data-feather="activity"></i>
+                <span>{{ t('system_monitor') }}</span>
+            </a>
+        </div>
         <div class="nav-item">
             <a href="{{ url_for('logs_page') }}" class="nav-link {{ 'active' if request.endpoint == 'logs_page' else '' }}">
                 <i data-feather="file-text"></i>
@@ -65,15 +70,9 @@
             </a>
         </div>
         <div class="nav-item">
-            <a href="{{ url_for('settings_general') }}" class="nav-link {{ 'active' if 'settings_' in request.endpoint else '' }}">
+            <a href="{{ url_for('settings_page') }}" class="nav-link {{ 'active' if request.endpoint == 'settings_page' else '' }}">
                 <i data-feather="settings"></i>
                 <span>{{ t('settings') }}</span>
-            </a>
-        </div>
-        <div class="nav-item">
-            <a href="{{ url_for('database_admin_page') }}" class="nav-link {{ 'active' if request.endpoint == 'database_admin_page' else '' }}">
-                <i data-feather="database"></i>
-                <span>{{ t('database_admin') }}</span>
             </a>
         </div>
         <div class="nav-divider"></div>
