@@ -178,4 +178,20 @@ cython_debug/
 #  exclude from AI features like autocomplete and code analysis. Recommended for sensitive data
 #  refer to https://docs.cursor.com/context/ignore-files
 .cursorignore
-.cursorindexingignore
+.cursorindexingignore# الملفات المؤقتة والاحتياطية
+*backup*
+*_old*
+*.tmp
+attached_assets/
+
+# AI Translator specific
+*.log
+*.db
+*.sqlite
+*.sqlite3
+library.db
+process.log
+backup_*/
+temp_*/
+ai-translator-*.zip
+ai-translator-*.tar.gz
