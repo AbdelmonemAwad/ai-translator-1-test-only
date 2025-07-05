@@ -30,11 +30,27 @@ missing_deps = []
 for category, deps in CORE_DEPENDENCIES.items():
     for dep in deps:
         try:
-            __import__(dep)
-            logger.info(f"✓ {dep} available")
+            if dep == 'cv2':
+                import cv2
+                logger.info(f"✓ {dep} available")
+            elif dep == 'torch':
+                # تجنب تحميل torch إذا كان معطوباً
+                try:
+                    import torch
+                    logger.info(f"✓ {dep} available (version: {torch.__version__})")
+                except Exception as e:
+                    logger.warning(f"⚠ {dep} loading issue: {str(e)}")
+                    missing_deps.append(dep)
+                    continue
+            else:
+                __import__(dep)
+                logger.info(f"✓ {dep} available")
         except ImportError:
             missing_deps.append(dep)
             logger.warning(f"⚠ {dep} not found")
+        except Exception as e:
+            missing_deps.append(dep)
+            logger.warning(f"⚠ {dep} error: {str(e)}")
 
 if missing_deps:
     logger.warning(f"Missing dependencies: {', '.join(missing_deps)}")

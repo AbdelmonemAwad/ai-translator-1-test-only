@@ -171,8 +171,8 @@
                         {{ t('enable_remote_storage') }}
                     </label>
                     <select id="remote_storage_enabled" name="remote_storage_enabled" class="setting-select">
-                        <option value="true" {% if current_settings.get('remote_storage_enabled') == 'true' %}selected{% endif %}>{{ t('enabled') }}</option>
-                        <option value="false" {% if current_settings.get('remote_storage_enabled') != 'true' %}selected{% endif %}>{{ t('disabled') }}</option>
+                        <option value="true" {% if current_settings.get('remote_storage_enabled') == 'true' or current_settings.get('remote_storage_enabled') == True %}selected{% endif %}>{{ t('enabled') }}</option>
+                        <option value="false" {% if current_settings.get('remote_storage_enabled') == 'false' or current_settings.get('remote_storage_enabled') == False or not current_settings.get('remote_storage_enabled') %}selected{% endif %}>{{ t('disabled') }}</option>
                     </select>
                     <div class="setting-description">{{ t('remote_storage_enabled_description') }}</div>
                 </div>
@@ -254,18 +254,21 @@
                         <div class="setting-description">{{ t('remote_series_path_description') }}</div>
                     </div>
 
-                    <!-- Mount Options -->
+                    <!-- Mount Options (v2.2.5-fixed) -->
                     <div class="setting-group">
                         <label for="mount_options" class="setting-label">
                             <i data-feather="settings"></i>
-                            {{ t('mount_options') }}
+                            {{ t('mount_options') }} <small style="color: #888;">(خيارات التحميل)</small>
                         </label>
-                        <input type="text" 
-                               id="mount_options" 
-                               name="mount_options" 
-                               value="{{ current_settings.get('mount_options', 'defaults,noauto') }}" 
-                               class="setting-input"
-                               placeholder="defaults,noauto">
+                        <select id="mount_options" name="mount_options" class="setting-select">
+                            <option value="defaults,noauto" {% if current_settings.get('mount_options', 'defaults,noauto') == 'defaults,noauto' %}selected{% endif %}>defaults,noauto (الافتراضي)</option>
+                            <option value="defaults,auto" {% if current_settings.get('mount_options') == 'defaults,auto' %}selected{% endif %}>defaults,auto</option>
+                            <option value="rw,noauto" {% if current_settings.get('mount_options') == 'rw,noauto' %}selected{% endif %}>rw,noauto (قراءة وكتابة)</option>
+                            <option value="ro,noauto" {% if current_settings.get('mount_options') == 'ro,noauto' %}selected{% endif %}>ro,noauto (قراءة فقط)</option>
+                            <option value="uid=1000,gid=1000,noauto" {% if current_settings.get('mount_options') == 'uid=1000,gid=1000,noauto' %}selected{% endif %}>uid=1000,gid=1000,noauto (صلاحيات المستخدم)</option>
+                            <option value="vers=3,noauto" {% if current_settings.get('mount_options') == 'vers=3,noauto' %}selected{% endif %}>vers=3,noauto (NFS الإصدار 3)</option>
+                            <option value="noperm,noauto" {% if current_settings.get('mount_options') == 'noperm,noauto' %}selected{% endif %}>noperm,noauto (بدون فحص الصلاحيات)</option>
+                        </select>
                         <div class="setting-description">{{ t('mount_options_description') }}</div>
                     </div>
 
@@ -485,41 +488,150 @@ function showPathsTab(tabId, element) {
 
 // Remote storage functions
 async function testRemoteConnection() {
-    const response = await fetch('/api/remote-mount-test', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({
-            host: document.getElementById('remote_host').value,
-            type: document.getElementById('remote_mount_type').value,
-            username: document.getElementById('remote_username').value
-        })
-    });
-    
-    const result = await response.json();
-    alert(result.message || 'Test completed');
+    try {
+        const response = await fetch('/api/remote-mount-test', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                protocol: document.getElementById('remote_mount_type').value,
+                host: document.getElementById('remote_host').value,
+                username: document.getElementById('remote_username').value,
+                password: document.getElementById('remote_password').value,
+                path: '/',
+                port: document.getElementById('remote_mount_type').value === 'sftp' ? 22 : 
+                      document.getElementById('remote_mount_type').value === 'ftp' ? 21 : 445
+            })
+        });
+        
+        const result = await response.json();
+        if (result.success) {
+            alert('✓ Connection test successful!');
+        } else {
+            alert('✗ Connection test failed: ' + (result.message || result.error || 'Unknown error'));
+        }
+    } catch (error) {
+        alert('✗ Connection test failed: ' + error.message);
+    }
 }
 
 async function setupRemoteMount() {
-    const response = await fetch('/api/remote-mount-setup', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({
-            host: document.getElementById('remote_host').value,
-            type: document.getElementById('remote_mount_type').value,
-            movies_path: document.getElementById('remote_movies_path').value,
-            series_path: document.getElementById('remote_series_path').value,
-            options: document.getElementById('mount_options').value
-        })
-    });
-    
-    const result = await response.json();
-    alert(result.message || 'Setup completed');
+    try {
+        const response = await fetch('/api/remote-mount-setup', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                enabled: true,
+                protocol: document.getElementById('remote_mount_type').value,
+                host: document.getElementById('remote_host').value,
+                username: document.getElementById('remote_username').value,
+                password: document.getElementById('remote_password').value,
+                path: '/',
+                port: document.getElementById('remote_mount_type').value === 'sftp' ? 22 : 
+                      document.getElementById('remote_mount_type').value === 'ftp' ? 21 : 445,
+                mount_point: '/mnt/remote',
+                auto_mount: true
+            })
+        });
+        
+        const result = await response.json();
+        if (result.success) {
+            alert('✓ Remote mount setup successful!');
+        } else {
+            alert('✗ Remote mount setup failed: ' + (result.message || result.error || 'Unknown error'));
+        }
+    } catch (error) {
+        alert('✗ Remote mount setup failed: ' + error.message);
+    }
 }
 
 async function checkMountStatus() {
-    const response = await fetch('/api/remote-mount-status');
-    const result = await response.json();
-    alert(result.message || 'Status checked');
+    try {
+        const response = await fetch('/api/remote-mount-status');
+        const result = await response.json();
+        if (result.success) {
+            const mountInfo = result.mount_points || {};
+            const mountCount = Object.keys(mountInfo).length;
+            alert(`✓ Status checked - ${mountCount} remote mounts found`);
+        } else {
+            alert('✗ Status check failed: ' + (result.message || result.error || 'Unknown error'));
+        }
+    } catch (error) {
+        alert('✗ Status check failed: ' + error.message);
+    }
 }
+
+// Initialize page and debug dropdown issues
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('Paths settings page loaded - v2.2.5-fixed');
+    
+    // Check if mount_options dropdown is properly loaded
+    const mountOptions = document.getElementById('mount_options');
+    if (mountOptions) {
+        console.log('Mount options element found:', mountOptions.tagName, 'Options count:', mountOptions.options ? mountOptions.options.length : 'N/A');
+        
+        if (mountOptions.tagName !== 'SELECT') {
+            console.error('ERROR: Mount options is not a SELECT element! It is:', mountOptions.tagName);
+            // Force reload if element is wrong type
+            setTimeout(() => {
+                console.log('Forcing page reload due to incorrect element type...');
+                window.location.reload(true);
+            }, 1000);
+        }
+    } else {
+        console.error('ERROR: Mount options element not found!');
+    }
+    
+    // Initialize Feather icons
+    if (typeof feather !== 'undefined') {
+        feather.replace();
+    }
+});
+
+// Force cache clear on page visibility change
+document.addEventListener('visibilitychange', function() {
+    if (!document.hidden) {
+        // Page became visible, check for updates
+        const mountOptions = document.getElementById('mount_options');
+        if (mountOptions && mountOptions.tagName !== 'SELECT') {
+            console.log('Detected incorrect element after visibility change, reloading...');
+            window.location.reload(true);
+        }
+    }
+});
+
+// Force check remote storage status on page load
+async function checkRemoteStorageStatus() {
+    try {
+        const response = await fetch('/api/remote-mount-status');
+        const result = await response.json();
+        console.log('Remote storage status check:', result);
+        
+        // If remote storage is disabled, force enable it
+        if (result && result.status === 'disabled') {
+            console.log('Remote storage is disabled, attempting to enable...');
+            // Force enable remote storage
+            const enableResponse = await fetch('/settings/paths', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: 'remote_storage_enabled=true'
+            });
+            
+            if (enableResponse.ok) {
+                console.log('Remote storage enabled successfully');
+                // Reload page to reflect changes
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1000);
+            }
+        }
+    } catch (error) {
+        console.error('Error checking remote storage status:', error);
+    }
+}
+
+// Run status check after page loads
+setTimeout(checkRemoteStorageStatus, 2000);
 </script>
 {% endblock %}

@@ -14,10 +14,10 @@ class FileBrowser {
     init() {
         // Create modal if it doesn't exist
         this.createModal();
-        
+
         // Bind events
         this.bindEvents();
-        
+
         console.log('File Browser initialized');
     }
 
@@ -61,10 +61,10 @@ class FileBrowser {
         `;
 
         document.body.insertAdjacentHTML('beforeend', modalHTML);
-        
+
         // Add CSS
         this.addStyles();
-        
+
         console.log('Modal created successfully');
     }
 
@@ -289,20 +289,20 @@ class FileBrowser {
 
     open(targetInputId) {
         console.log('Opening file browser for:', targetInputId);
-        
+
         this.currentTargetInput = targetInputId;
         const inputElement = document.getElementById(targetInputId);
         this.currentBrowserPath = inputElement ? inputElement.value || '/' : '/';
-        
+
         const modal = document.getElementById(this.modalId);
         if (!modal) {
             console.error('File browser modal not found');
             return;
         }
-        
+
         modal.style.display = 'flex';
         document.body.style.overflow = 'hidden';
-        
+
         this.loadFolders(this.currentBrowserPath);
     }
 
@@ -323,11 +323,11 @@ class FileBrowser {
     async loadFolders(path) {
         const pathDisplay = document.getElementById('currentBrowserPath');
         const folderList = document.getElementById('folderList');
-        
+
         if (pathDisplay) {
             pathDisplay.value = path;
         }
-        
+
         if (folderList) {
             folderList.innerHTML = '<div class="loading-state">جاري التحميل...</div>';
         }

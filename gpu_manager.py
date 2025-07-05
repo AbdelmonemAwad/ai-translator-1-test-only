@@ -27,8 +27,14 @@ class GPUManager:
                 timeout=10
             )
             return result.returncode == 0, result.stdout.strip()
+        except FileNotFoundError:
+            # Silently handle missing commands in cloud environments
+            return False, f"Command not found: {command[0]}"
+        except subprocess.TimeoutExpired:
+            self.logger.warning(f"Command timeout: {' '.join(command)}")
+            return False, "Command timeout"
         except Exception as e:
-            self.logger.error(f"Command failed: {' '.join(command)} - {e}")
+            # Handle permission and other errors gracefully
             return False, str(e)
     
     def detect_nvidia_gpus(self) -> List[Dict]:

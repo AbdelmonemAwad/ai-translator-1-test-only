@@ -165,16 +165,28 @@ def download_thumbnail(url, media_file_id):
 
 def update_setting(key, value):
     """Update or create a setting"""
-    setting = Settings.query.filter_by(key=key).first()
-    if setting:
-        setting.value = value
-        setting.updated_at = datetime.utcnow()
-    else:
-        setting = Settings()
-        setting.key = key
-        setting.value = value
-        db.session.add(setting)
-    db.session.commit()
+    try:
+        print(f"DEBUG: update_setting called with key={key}, value={value}")
+        setting = Settings.query.filter_by(key=key).first()
+        if setting:
+            print(f"DEBUG: Found existing setting {key}: {setting.value} -> {value}")
+            setting.value = value
+            setting.updated_at = datetime.utcnow()
+        else:
+            print(f"DEBUG: Creating new setting {key} = {value}")
+            setting = Settings()
+            setting.key = key
+            setting.value = value
+            # Set default section if not specified
+            if not hasattr(setting, 'section') or not setting.section:
+                setting.section = 'DEFAULT'
+            db.session.add(setting)
+        db.session.commit()
+        return True
+    except Exception as e:
+        db.session.rollback()
+        log_to_db("ERROR", f"Failed to update setting {key}", str(e))
+        return False
 
 def log_to_db(level, message, details=""):
     """Log message to database"""
@@ -697,9 +709,11 @@ def settings_paths():
         return redirect(url_for('login'))
     
     if request.method == 'POST':
+        print(f"DEBUG: POST data received: {dict(request.form)}")
         for key, value in request.form.items():
             if key.startswith('_'):
                 continue
+            print(f"DEBUG: Updating setting {key} = {value}")
             update_setting(key, value)
         
         flash('تم حفظ إعدادات المسارات بنجاح', 'success')
@@ -707,9 +721,19 @@ def settings_paths():
         return redirect(url_for('settings_paths'))
     
     current_settings = {}
-    # Include both PATHS and REMOTE_STORAGE sections
-    for setting in Settings.query.filter(Settings.section.in_(['PATHS', 'REMOTE_STORAGE'])).all():
+    # Include PATHS, REMOTE_STORAGE, and legacy DEFAULT section settings
+    for setting in Settings.query.filter(Settings.section.in_(['PATHS', 'REMOTE_STORAGE', 'DEFAULT'])).all():
+        # Only include remote-related settings from DEFAULT section
+        if setting.section == 'DEFAULT' and 'remote' not in setting.key:
+            continue
         current_settings[setting.key] = setting.value
+    
+    # Force refresh remote_storage_enabled from database to avoid cache issues
+    remote_storage_setting = Settings.query.filter_by(key='remote_storage_enabled').first()
+    if remote_storage_setting:
+        current_settings['remote_storage_enabled'] = remote_storage_setting.value
+        # Keep the value as string for template consistency
+        print(f"DEBUG: Remote storage setting value: {remote_storage_setting.value}, type: {type(remote_storage_setting.value)}")
     
     return render_template('settings/paths.html', 
                          current_section='paths',
@@ -949,6 +973,61 @@ def api_status():
     status = get_current_status()
     status['is_running'] = is_task_running()
     return jsonify(status)
+
+@app.route('/api/health-check')
+def api_health_check():
+    """Comprehensive system health check"""
+    try:
+        health = {
+            'status': 'healthy',
+            'database': 'connected',
+            'ai_components': {},
+            'system_resources': {},
+            'issues': []
+        }
+        
+        # Check database
+        try:
+            db.session.execute('SELECT 1')
+            health['database'] = 'connected'
+        except Exception as e:
+            health['database'] = 'error'
+            health['issues'].append(f'Database: {str(e)}')
+            health['status'] = 'degraded'
+        
+        # Check AI components
+        from ai_integration_workaround import get_ai_status
+        ai_status = get_ai_status()
+        health['ai_components'] = ai_status
+        
+        if not ai_status.get('system_ready', False):
+            health['issues'].append('AI system not fully ready')
+            health['status'] = 'degraded'
+        
+        # Check system resources
+        import psutil
+        health['system_resources'] = {
+            'cpu_percent': psutil.cpu_percent(),
+            'memory_percent': psutil.virtual_memory().percent,
+            'disk_percent': psutil.disk_usage('/').percent
+        }
+        
+        # Check for resource issues
+        if health['system_resources']['memory_percent'] > 90:
+            health['issues'].append('High memory usage')
+            health['status'] = 'warning'
+        
+        if health['system_resources']['disk_percent'] > 95:
+            health['issues'].append('Low disk space')
+            health['status'] = 'warning'
+        
+        return jsonify(health)
+        
+    except Exception as e:
+        return jsonify({
+            'status': 'error',
+            'error': str(e)
+        }), 500
 
 @app.route('/api/files')
 def api_files():
@@ -2702,6 +2781,17 @@ def api_remote_mount_test():
         return jsonify({'error': 'Unauthorized'}), 401
     
     try:
+        # Check if remote storage is enabled
+        settings = get_settings()
+        enabled_value = settings.get('remote_storage_enabled', 'false')
+        if isinstance(enabled_value, bool):
+            is_enabled = enabled_value
+        else:
+            is_enabled = str(enabled_value).lower() == 'true'
+        
+        if not is_enabled:
+            return jsonify({'success': False, 'message': 'Remote storage disabled', 'error': 'Remote storage is not enabled in settings'})
+        
         data = request.get_json()
         protocol = data.get('protocol')
         host = data.get('host')
@@ -2726,7 +2816,7 @@ def api_remote_mount_setup():
     try:
         data = request.get_json()
         
-        # Save remote mount settings
+        # Save remote mount settings (this function should be able to enable storage)
         update_setting('remote_storage_enabled', str(data.get('enabled', False)))
         update_setting('remote_storage_protocol', data.get('protocol', 'sftp'))
         update_setting('remote_storage_host', data.get('host', ''))
@@ -2767,12 +2857,21 @@ def api_remote_mount_status():
         
         # Add settings info
         settings = get_settings()
+        # Handle both string and boolean values for remote_storage_enabled
+        enabled_value = settings.get('remote_storage_enabled', 'false')
+        if isinstance(enabled_value, bool):
+            is_enabled = enabled_value
+        else:
+            is_enabled = str(enabled_value).lower() == 'true'
+        
         status['settings'] = {
-            'enabled': settings.get('remote_storage_enabled', 'false') == 'true',
+            'enabled': is_enabled,
             'protocol': settings.get('remote_storage_protocol', 'sftp'),
             'host': settings.get('remote_storage_host', ''),
             'mount_point': settings.get('remote_storage_mount_point', '/mnt/remote')
         }
+        
+        print(f"DEBUG: Remote storage API - enabled_value: {enabled_value}, type: {type(enabled_value)}, is_enabled: {is_enabled}")
         
         return jsonify(status)
     except Exception as e:
@@ -3061,6 +3160,7 @@ def download_github_release():
     
     # Check if GitHub release file exists - prioritize latest version with installation files
     release_files = [
+        'ai-translator-v2.2.5-final-github.zip',      # Latest final GitHub package with English docs
         'ai-translator-v2.2.5-fix-package.zip',       # Latest fix package with Flask-SQLAlchemy fix
         'ai-translator-v2.2.5-github-complete.zip',   # Complete with installation files
         'ai-translator-v2.2.5-github.zip',            # Latest GitHub package
@@ -3081,7 +3181,9 @@ def download_github_release():
                 version = '2.2.0'
             
             # Determine download name based on file content
-            if 'fix-package' in release_file:
+            if 'final-github' in release_file:
+                download_name = f'ai-translator-v{version}-final-github.zip'
+            elif 'fix-package' in release_file:
                 download_name = f'ai-translator-v{version}-fix-package.zip'
             elif 'complete' in release_file:
                 download_name = f'ai-translator-v{version}-complete-with-installer.zip'
@@ -3096,6 +3198,78 @@ def download_github_release():
             )
     else:
         return jsonify({'error': 'GitHub release file not found'}), 404
+
+@app.route('/download-fixed-github-release')
+def download_fixed_github_release():
+    """Download Fixed GitHub release package without authentication"""
+    from flask import send_file
+    
+    # Check if Fixed GitHub release file exists
+    fixed_release_files = [
+        'ai-translator-v2.2.5-fixed-github.zip',      # Latest fixed GitHub package
+        'ai-translator-v2.2.5-final-github.zip',      # Fallback to final
+        'ai-translator-v2.2.5-fix-package.zip',       # Latest fix package
+        'ai-translator-v2.2.5-github.zip',            # Latest GitHub package
+    ]
+    
+    for release_file in fixed_release_files:
+        if os.path.exists(release_file):
+            version = '2.2.5'
+            
+            # Determine download name based on file content
+            if 'fixed-github' in release_file:
+                download_name = f'ai-translator-v{version}-fixed-github.zip'
+            elif 'final-github' in release_file:
+                download_name = f'ai-translator-v{version}-final-github.zip'
+            elif 'fix-package' in release_file:
+                download_name = f'ai-translator-v{version}-fix-package.zip'
+            else:
+                download_name = f'ai-translator-v{version}-ubuntu-server.zip'
+            
+            return send_file(
+                release_file,
+                as_attachment=True,
+                download_name=download_name,
+                mimetype='application/zip'
+            )
+    
+    return jsonify({'error': 'Fixed GitHub release file not found'}), 404
+
+@app.route('/download-final-github-release')
+def download_final_github_release():
+    """Download Final GitHub release package with cache fixes"""
+    from flask import send_file
+    
+    # Check if Final GitHub release file exists
+    final_release_files = [
+        'ai-translator-v2.2.5-final-cache-fix.zip',       # Latest final package with cache fixes
+        'ai-translator-v2.2.5-fixed-github.zip',          # Fallback to fixed
+        'ai-translator-v2.2.5-final-github.zip',          # Fallback to final
+        'ai-translator-v2.2.5-github.zip',                # Latest GitHub package
+    ]
+    
+    for release_file in final_release_files:
+        if os.path.exists(release_file):
+            version = '2.2.5'
+            
+            # Determine download name based on file content
+            if 'final-cache-fix' in release_file:
+                download_name = f'ai-translator-v{version}-final-cache-fix.zip'
+            elif 'fixed-github' in release_file:
+                download_name = f'ai-translator-v{version}-fixed-github.zip'
+            elif 'final-github' in release_file:
+                download_name = f'ai-translator-v{version}-final-github.zip'
+            else:
+                download_name = f'ai-translator-v{version}-ubuntu-server.zip'
+            
+            return send_file(
+                release_file,
+                as_attachment=True,
+                download_name=download_name,
+                mimetype='application/zip'
+            )
+    
+    return jsonify({'error': 'Final GitHub release file not found'}), 404
 
 # System Performance API Endpoints
 @app.route('/api/optimize-system', methods=['POST'])
